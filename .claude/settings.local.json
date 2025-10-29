@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir:*)",
+      "Bash(dotnet new:*)",
+      "Bash(dotnet sln:*)",
+      "Bash(dotnet add:*)",
+      "Bash(del srcTaskManager.DomainClass1.cs)",
+      "Bash(del:*)",
+      "Bash(rm:*)",
+      "Bash(dotnet build:*)",
+      "Bash(dotnet ef migrations add:*)",
+      "Bash(dotnet tool install:*)",
+      "Bash(dotnet remove:*)",
+      "Bash(dotnet clean:*)",
+      "Bash(dotnet ef database update:*)",
+      "Bash(dotnet tool update:*)",
+      "Bash(sqlcmd:*)",
+      "Read(//c/Users/sadee/OneDrive/Desktop/**)",
+      "Bash(ng version:*)",
+      "Bash(ng new:*)",
+      "Bash(robocopy src Backend/src /E /MOVE)",
+      "Bash(robocopy . Backend /MOV TaskManager.slnx)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

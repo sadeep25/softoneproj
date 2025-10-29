@@ -1,0 +1,23 @@
+{
+  "name": "task-manager-fullstack",
+  "version": "1.0.0",
+  "description": "Full Stack Task Manager Application with .NET and Angular",
+  "scripts": {
+    "frontend": "cd Frontend/task-manager-ui && npm start",
+    "frontend:build": "cd Frontend/task-manager-ui && npm run build",
+    "frontend:test": "cd Frontend/task-manager-ui && npm test",
+    "backend": "cd src/TaskManager.API && dotnet run",
+    "backend:build": "dotnet build",
+    "backend:test": "dotnet test",
+    "install:frontend": "cd Frontend/task-manager-ui && npm install"
+  },
+  "keywords": [
+    "task-manager",
+    "dotnet",
+    "angular",
+    "clean-architecture",
+    "cqrs"
+  ],
+  "author": "",
+  "license": "MIT"
+}

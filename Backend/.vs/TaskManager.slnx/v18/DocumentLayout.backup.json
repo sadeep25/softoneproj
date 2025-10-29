@@ -1,0 +1,105 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\sadee\\OneDrive\\Desktop\\SoftOne\\Backend\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{6E06F02A-04B5-9E85-501E-9A2A2B9ED48F}|src\\TaskManager.Application\\TaskManager.Application.csproj|c:\\users\\sadee\\onedrive\\desktop\\softone\\backend\\src\\taskmanager.application\\dtos\\updatetaskdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6E06F02A-04B5-9E85-501E-9A2A2B9ED48F}|src\\TaskManager.Application\\TaskManager.Application.csproj|solutionrelative:src\\taskmanager.application\\dtos\\updatetaskdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6E06F02A-04B5-9E85-501E-9A2A2B9ED48F}|src\\TaskManager.Application\\TaskManager.Application.csproj|c:\\users\\sadee\\onedrive\\desktop\\softone\\backend\\src\\taskmanager.application\\dtos\\taskdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6E06F02A-04B5-9E85-501E-9A2A2B9ED48F}|src\\TaskManager.Application\\TaskManager.Application.csproj|solutionrelative:src\\taskmanager.application\\dtos\\taskdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6E06F02A-04B5-9E85-501E-9A2A2B9ED48F}|src\\TaskManager.Application\\TaskManager.Application.csproj|c:\\users\\sadee\\onedrive\\desktop\\softone\\backend\\src\\taskmanager.application\\dtos\\createtaskdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6E06F02A-04B5-9E85-501E-9A2A2B9ED48F}|src\\TaskManager.Application\\TaskManager.Application.csproj|solutionrelative:src\\taskmanager.application\\dtos\\createtaskdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{86F97B45-98F9-4FF4-D142-01F3AF77EEBE}|src\\TaskManager.Infrastructure\\TaskManager.Infrastructure.csproj|c:\\users\\sadee\\onedrive\\desktop\\softone\\backend\\src\\taskmanager.infrastructure\\repositories\\unitofwork.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{86F97B45-98F9-4FF4-D142-01F3AF77EEBE}|src\\TaskManager.Infrastructure\\TaskManager.Infrastructure.csproj|solutionrelative:src\\taskmanager.infrastructure\\repositories\\unitofwork.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6E06F02A-04B5-9E85-501E-9A2A2B9ED48F}|src\\TaskManager.Application\\TaskManager.Application.csproj|c:\\users\\sadee\\onedrive\\desktop\\softone\\backend\\src\\taskmanager.application\\features\\tasks\\commands\\createtask\\createtaskcommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6E06F02A-04B5-9E85-501E-9A2A2B9ED48F}|src\\TaskManager.Application\\TaskManager.Application.csproj|solutionrelative:src\\taskmanager.application\\features\\tasks\\commands\\createtask\\createtaskcommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "UpdateTaskDto.cs",
+              "DocumentMoniker": "C:\\Users\\sadee\\OneDrive\\Desktop\\SoftOne\\Backend\\src\\TaskManager.Application\\DTOs\\UpdateTaskDto.cs",
+              "RelativeDocumentMoniker": "src\\TaskManager.Application\\DTOs\\UpdateTaskDto.cs",
+              "ToolTip": "C:\\Users\\sadee\\OneDrive\\Desktop\\SoftOne\\Backend\\src\\TaskManager.Application\\DTOs\\UpdateTaskDto.cs",
+              "RelativeToolTip": "src\\TaskManager.Application\\DTOs\\UpdateTaskDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-29T08:40:21.105Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "TaskDto.cs",
+              "DocumentMoniker": "C:\\Users\\sadee\\OneDrive\\Desktop\\SoftOne\\Backend\\src\\TaskManager.Application\\DTOs\\TaskDto.cs",
+              "RelativeDocumentMoniker": "src\\TaskManager.Application\\DTOs\\TaskDto.cs",
+              "ToolTip": "C:\\Users\\sadee\\OneDrive\\Desktop\\SoftOne\\Backend\\src\\TaskManager.Application\\DTOs\\TaskDto.cs",
+              "RelativeToolTip": "src\\TaskManager.Application\\DTOs\\TaskDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-29T08:40:18.904Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "CreateTaskDto.cs",
+              "DocumentMoniker": "C:\\Users\\sadee\\OneDrive\\Desktop\\SoftOne\\Backend\\src\\TaskManager.Application\\DTOs\\CreateTaskDto.cs",
+              "RelativeDocumentMoniker": "src\\TaskManager.Application\\DTOs\\CreateTaskDto.cs",
+              "ToolTip": "C:\\Users\\sadee\\OneDrive\\Desktop\\SoftOne\\Backend\\src\\TaskManager.Application\\DTOs\\CreateTaskDto.cs",
+              "RelativeToolTip": "src\\TaskManager.Application\\DTOs\\CreateTaskDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-29T08:40:14.558Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "CreateTaskCommandHandler.cs",
+              "DocumentMoniker": "C:\\Users\\sadee\\OneDrive\\Desktop\\SoftOne\\Backend\\src\\TaskManager.Application\\Features\\Tasks\\Commands\\CreateTask\\CreateTaskCommandHandler.cs",
+              "RelativeDocumentMoniker": "src\\TaskManager.Application\\Features\\Tasks\\Commands\\CreateTask\\CreateTaskCommandHandler.cs",
+              "ToolTip": "C:\\Users\\sadee\\OneDrive\\Desktop\\SoftOne\\Backend\\src\\TaskManager.Application\\Features\\Tasks\\Commands\\CreateTask\\CreateTaskCommandHandler.cs",
+              "RelativeToolTip": "src\\TaskManager.Application\\Features\\Tasks\\Commands\\CreateTask\\CreateTaskCommandHandler.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABoAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-29T08:33:55.681Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "UnitOfWork.cs",
+              "DocumentMoniker": "C:\\Users\\sadee\\OneDrive\\Desktop\\SoftOne\\Backend\\src\\TaskManager.Infrastructure\\Repositories\\UnitOfWork.cs",
+              "RelativeDocumentMoniker": "src\\TaskManager.Infrastructure\\Repositories\\UnitOfWork.cs",
+              "ToolTip": "C:\\Users\\sadee\\OneDrive\\Desktop\\SoftOne\\Backend\\src\\TaskManager.Infrastructure\\Repositories\\UnitOfWork.cs",
+              "RelativeToolTip": "src\\TaskManager.Infrastructure\\Repositories\\UnitOfWork.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAswCcAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-29T08:33:42.253Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

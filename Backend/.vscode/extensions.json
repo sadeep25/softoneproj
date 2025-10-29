@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "ms-dotnettools.csharp",
+    "ms-dotnettools.csdevkit",
+    "kreativ-software.csharpextensions",
+    "jchannon.csharpextensions",
+    "formulahendry.dotnet-test-explorer"
+  ]
+}
