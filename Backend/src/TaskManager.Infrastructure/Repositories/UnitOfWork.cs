@@ -9,6 +9,7 @@ public class UnitOfWork : IUnitOfWork
     private readonly TaskDbContext _context;
     private IDbContextTransaction? _transaction;
     private ITaskRepository? _tasks;
+    private IUserRepository? _users;
 
     public UnitOfWork(TaskDbContext context)
     {
@@ -18,6 +19,11 @@ public class UnitOfWork : IUnitOfWork
     public ITaskRepository Tasks
     {
         get { return _tasks ??= new TaskRepository(_context); }
+    }
+
+    public IUserRepository Users
+    {
+        get { return _users ??= new UserRepository(_context); }
     }
 
     public async Task<int> CompleteAsync()

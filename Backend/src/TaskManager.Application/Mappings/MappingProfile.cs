@@ -31,5 +31,8 @@ public class MappingProfile : Profile
         // UpdateTaskCommand to TaskItem
         CreateMap<UpdateTaskCommand, TaskItem>()
             .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+
+        // User to UserDto
+        CreateMap<User, UserDto>();
     }
 }

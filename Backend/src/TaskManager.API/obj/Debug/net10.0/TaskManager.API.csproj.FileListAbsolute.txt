@@ -455,9 +455,6 @@ C:\Users\sadee\OneDrive\Desktop\SoftOne\Backend\src\TaskManager.API\obj\Debug\ne
 C:\Users\sadee\OneDrive\Desktop\SoftOne\Backend\src\TaskManager.API\obj\Debug\net10.0\TaskManager.API.pdb
 C:\Users\sadee\OneDrive\Desktop\SoftOne\Backend\src\TaskManager.API\obj\Debug\net10.0\TaskManager.API.genruntimeconfig.cache
 C:\Users\sadee\OneDrive\Desktop\SoftOne\Backend\src\TaskManager.API\obj\Debug\net10.0\ref\TaskManager.API.dll
-C:\Users\sadee\OneDrive\Desktop\softoneproj\Backend\src\TaskManager.API\obj\Debug\net10.0\TaskManager.API.dll
-C:\Users\sadee\OneDrive\Desktop\softoneproj\Backend\src\TaskManager.API\obj\Debug\net10.0\refint\TaskManager.API.dll
-C:\Users\sadee\OneDrive\Desktop\softoneproj\Backend\src\TaskManager.API\obj\Debug\net10.0\TaskManager.API.pdb
 C:\Users\sadee\OneDrive\Desktop\softoneproj\Backend\src\TaskManager.API\bin\Debug\net10.0\BuildHost-net472\Microsoft.Build.Locator.dll
 C:\Users\sadee\OneDrive\Desktop\softoneproj\Backend\src\TaskManager.API\bin\Debug\net10.0\BuildHost-net472\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.exe
 C:\Users\sadee\OneDrive\Desktop\softoneproj\Backend\src\TaskManager.API\bin\Debug\net10.0\BuildHost-net472\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.exe.config
@@ -682,5 +679,9 @@ C:\Users\sadee\OneDrive\Desktop\softoneproj\Backend\src\TaskManager.API\obj\Debu
 C:\Users\sadee\OneDrive\Desktop\softoneproj\Backend\src\TaskManager.API\obj\Debug\net10.0\staticwebassets.build.endpoints.json
 C:\Users\sadee\OneDrive\Desktop\softoneproj\Backend\src\TaskManager.API\obj\Debug\net10.0\swae.build.ex.cache
 C:\Users\sadee\OneDrive\Desktop\softoneproj\Backend\src\TaskManager.API\obj\Debug\net10.0\TaskMana.FE476EE3.Up2Date
+C:\Users\sadee\OneDrive\Desktop\softoneproj\Backend\src\TaskManager.API\obj\Debug\net10.0\TaskManager.API.dll
+C:\Users\sadee\OneDrive\Desktop\softoneproj\Backend\src\TaskManager.API\obj\Debug\net10.0\refint\TaskManager.API.dll
+C:\Users\sadee\OneDrive\Desktop\softoneproj\Backend\src\TaskManager.API\obj\Debug\net10.0\TaskManager.API.pdb
 C:\Users\sadee\OneDrive\Desktop\softoneproj\Backend\src\TaskManager.API\obj\Debug\net10.0\TaskManager.API.genruntimeconfig.cache
 C:\Users\sadee\OneDrive\Desktop\softoneproj\Backend\src\TaskManager.API\obj\Debug\net10.0\ref\TaskManager.API.dll
+C:\Users\sadee\OneDrive\Desktop\softoneproj\Backend\src\TaskManager.API\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

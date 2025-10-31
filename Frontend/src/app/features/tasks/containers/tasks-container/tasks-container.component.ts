@@ -1,5 +1,7 @@
 import { Component, OnInit, signal, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { Router } from '@angular/router';
+import { AuthService } from '../../../../core/services/auth.service';
 import { Task, TaskStatus, CreateTaskDto, UpdateTaskDto } from '../../../../core/models';
 import { LoadingSpinnerComponent } from '../../../../shared/components/loading-spinner/loading-spinner.component';
 import { ErrorMessageComponent } from '../../../../shared/components/error-message/error-message.component';
@@ -25,8 +27,10 @@ import * as fromTask from '../../../../core/store/task';
   ]
 })
 export class TasksContainerComponent implements OnInit {
-  // Inject store
+  // Inject dependencies
   private readonly store = inject(Store);
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
 
   // Signals from store using selectSignal
   tasks = this.store.selectSignal(fromTask.getTasks);
@@ -108,5 +112,17 @@ export class TasksContainerComponent implements OnInit {
   onRetry(): void {
     this.store.dispatch(TaskPageActions.clearError());
     this.store.dispatch(TaskPageActions.loadTasks());
+  }
+
+  onLogout(): void {
+    this.authService.logout().subscribe({
+      next: () => {
+        this.router.navigate(['/login']);
+      },
+      error: () => {
+        // Even if logout fails on server, clear local state and redirect
+        this.router.navigate(['/login']);
+      }
+    });
   }
 }

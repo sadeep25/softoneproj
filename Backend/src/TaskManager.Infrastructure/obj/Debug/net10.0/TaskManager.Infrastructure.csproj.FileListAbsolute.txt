@@ -82,9 +82,6 @@ C:\Users\sadee\OneDrive\Desktop\SoftOne\Backend\src\TaskManager.Infrastructure\o
 C:\Users\sadee\OneDrive\Desktop\SoftOne\Backend\src\TaskManager.Infrastructure\obj\Debug\net10.0\TaskManager.Infrastructure.pdb
 C:\Users\sadee\OneDrive\Desktop\SoftOne\Backend\src\TaskManager.Infrastructure\obj\Debug\net10.0\TaskManager.Infrastructure.genruntimeconfig.cache
 C:\Users\sadee\OneDrive\Desktop\SoftOne\Backend\src\TaskManager.Infrastructure\obj\Debug\net10.0\ref\TaskManager.Infrastructure.dll
-C:\Users\sadee\OneDrive\Desktop\softoneproj\Backend\src\TaskManager.Infrastructure\obj\Debug\net10.0\TaskManager.Infrastructure.dll
-C:\Users\sadee\OneDrive\Desktop\softoneproj\Backend\src\TaskManager.Infrastructure\obj\Debug\net10.0\refint\TaskManager.Infrastructure.dll
-C:\Users\sadee\OneDrive\Desktop\softoneproj\Backend\src\TaskManager.Infrastructure\obj\Debug\net10.0\TaskManager.Infrastructure.pdb
 C:\Users\sadee\OneDrive\Desktop\softoneproj\Backend\src\TaskManager.Infrastructure\bin\Debug\net10.0\TaskManager.Infrastructure.deps.json
 C:\Users\sadee\OneDrive\Desktop\softoneproj\Backend\src\TaskManager.Infrastructure\bin\Debug\net10.0\TaskManager.Infrastructure.runtimeconfig.json
 C:\Users\sadee\OneDrive\Desktop\softoneproj\Backend\src\TaskManager.Infrastructure\bin\Debug\net10.0\TaskManager.Infrastructure.dll
@@ -100,5 +97,8 @@ C:\Users\sadee\OneDrive\Desktop\softoneproj\Backend\src\TaskManager.Infrastructu
 C:\Users\sadee\OneDrive\Desktop\softoneproj\Backend\src\TaskManager.Infrastructure\obj\Debug\net10.0\TaskManager.Infrastructure.csproj.CoreCompileInputs.cache
 C:\Users\sadee\OneDrive\Desktop\softoneproj\Backend\src\TaskManager.Infrastructure\obj\Debug\net10.0\TaskManager.Infrastructure.sourcelink.json
 C:\Users\sadee\OneDrive\Desktop\softoneproj\Backend\src\TaskManager.Infrastructure\obj\Debug\net10.0\TaskMana.DD0CDC6B.Up2Date
+C:\Users\sadee\OneDrive\Desktop\softoneproj\Backend\src\TaskManager.Infrastructure\obj\Debug\net10.0\TaskManager.Infrastructure.dll
+C:\Users\sadee\OneDrive\Desktop\softoneproj\Backend\src\TaskManager.Infrastructure\obj\Debug\net10.0\refint\TaskManager.Infrastructure.dll
+C:\Users\sadee\OneDrive\Desktop\softoneproj\Backend\src\TaskManager.Infrastructure\obj\Debug\net10.0\TaskManager.Infrastructure.pdb
 C:\Users\sadee\OneDrive\Desktop\softoneproj\Backend\src\TaskManager.Infrastructure\obj\Debug\net10.0\TaskManager.Infrastructure.genruntimeconfig.cache
 C:\Users\sadee\OneDrive\Desktop\softoneproj\Backend\src\TaskManager.Infrastructure\obj\Debug\net10.0\ref\TaskManager.Infrastructure.dll

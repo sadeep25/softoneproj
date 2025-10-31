@@ -1,29 +1,22 @@
 export interface User {
   id: string;
+  name: string;
   email: string;
-  firstName: string;
-  lastName: string;
-  role: UserRole;
+  username: string;
   isActive: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export enum UserRole {
-  Admin = 'Admin',
-  Manager = 'Manager',
-  Developer = 'Developer',
-  Tester = 'Tester'
+  lastLoginAt?: string;
+  createdAt: string;
 }
 
 export interface LoginRequest {
-  email: string;
+  username: string;
   password: string;
 }
 
 export interface AuthResponse {
-  token: string;
-  refreshToken: string;
-  user: User;
-  expiresAt: Date;
+  success: boolean;
+  message?: string;
+  user?: User;
+  token?: string;
+  refreshToken?: string;
 }
