@@ -30,14 +30,12 @@ public class TasksController : ControllerBase
     public async Task<ActionResult<ApiResponse<IEnumerable<TaskDto>>>> GetAllTasks(
         [FromQuery] TaskManager.Domain.Enums.TaskStatus? status,
         [FromQuery] TaskManager.Domain.Enums.Priority? priority,
-        [FromQuery] string? assignedTo,
         [FromQuery] string? searchTerm)
     {
         var query = new GetAllTasksQuery
         {
             Status = status,
             Priority = priority,
-            AssignedTo = assignedTo,
             SearchTerm = searchTerm
         };
 

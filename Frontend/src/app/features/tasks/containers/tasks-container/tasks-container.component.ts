@@ -38,6 +38,7 @@ export class TasksContainerComponent implements OnInit {
   error = this.store.selectSignal(fromTask.getError);
   isEmpty = this.store.selectSignal(fromTask.getIsEmpty);
   filters = this.store.selectSignal(fromTask.getFilters);
+  selectedTask = this.store.selectSignal(fromTask.getSelectedTask);
 
   // Local component state as signals
   viewMode = signal<'list' | 'board'>('board');
@@ -90,6 +91,18 @@ export class TasksContainerComponent implements OnInit {
 
   onCancelCreate(): void {
     this.showCreateForm.set(false);
+  }
+
+  // Save edits for an existing task selected from the list
+  onSaveEdit(taskData: UpdateTaskDto): void {
+    const current = this.selectedTask();
+    if (!current) return;
+    this.store.dispatch(TaskPageActions.updateTask({ id: current.id, updates: taskData }));
+    this.store.dispatch(TaskPageActions.clearCurrentTask());
+  }
+
+  onCancelEdit(): void {
+    this.store.dispatch(TaskPageActions.clearCurrentTask());
   }
 
   onRetry(): void {

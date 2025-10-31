@@ -5,7 +5,6 @@ import { TaskStatus, TaskPriority } from '../../../../core/models';
 export interface TaskFilters {
   status?: TaskStatus;
   priority?: TaskPriority;
-  assignedTo?: string;
   searchTerm?: string;
 }
 
@@ -29,11 +28,10 @@ export class TaskFiltersComponent {
 
   currentPriority = computed(() => this.filters().priority || '');
 
-  currentAssignee = computed(() => this.filters().assignedTo || '');
-
   hasActiveFilters = computed(() => {
     const currentFilters = this.filters();
-    return Object.values(currentFilters).some(value => value !== undefined && value !== '');
+    // ignore assignedTo (removed)
+    return [currentFilters.searchTerm, currentFilters.status, currentFilters.priority].some(value => value !== undefined && value !== '');
   });
 
   statusOptions = [
@@ -65,10 +63,7 @@ export class TaskFiltersComponent {
     this.updateFilters({ priority: (target.value as TaskPriority) || undefined });
   }
 
-  onAssigneeChange(event: Event) {
-    const target = event.target as HTMLInputElement;
-    this.updateFilters({ assignedTo: target.value || undefined });
-  }
+  // Assignee filter removed
 
   onClearFilters(): void {
     this.filtersChange.emit({});

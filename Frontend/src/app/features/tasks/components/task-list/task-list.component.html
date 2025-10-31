@@ -3,7 +3,6 @@
     <div class="header-cell">Task</div>
     <div class="header-cell">Priority</div>
     <div class="header-cell">Status</div>
-    <div class="header-cell">Assignee</div>
     <div class="header-cell">Due Date</div>
     <div class="header-cell">Actions</div>
   </div>
@@ -35,9 +34,7 @@
         </span>
       </div>
 
-      <div class="task-cell">
-        {{ task.assignedTo || '-' }}
-      </div>
+    
 
       <div class="task-cell">
         @if (task.dueDate) {

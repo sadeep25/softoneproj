@@ -5,7 +5,6 @@ export interface Task {
   status: TaskStatus;
   priority: TaskPriority;
   dueDate?: Date;
-  assignedTo?: string;
   isCompleted: boolean;
   completedAt?: Date;
   tags?: string;
@@ -34,7 +33,6 @@ export interface CreateTaskDto {
   description?: string;
   priority: TaskPriority;
   dueDate?: Date;
-  assignedTo?: string;
   tags?: string;
 }
 
@@ -44,6 +42,5 @@ export interface UpdateTaskDto {
   status?: TaskStatus;
   priority?: TaskPriority;
   dueDate?: Date;
-  assignedTo?: string;
   tags?: string;
 }

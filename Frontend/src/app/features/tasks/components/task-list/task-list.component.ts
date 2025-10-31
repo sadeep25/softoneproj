@@ -12,6 +12,8 @@ export class TaskListComponent {
   // Signal-based inputs and outputs
   tasks = input<Task[]>([]);
   taskSelect = output<Task>();
+  // separate event for edit button clicks so row click doesn't trigger edit
+  taskEdit = output<Task>();
   taskUpdate = output<{ id: string; updates: any }>();
   taskDelete = output<string>();
 
@@ -45,8 +47,8 @@ export class TaskListComponent {
   }
 
   onEdit(task: Task) {
-    // Emit task update event - for now just select the task
-    this.taskSelect.emit(task);
+    // Emit edit event — parent can open edit form when this is emitted
+    this.taskEdit.emit(task);
   }
 
   onDelete(taskId: string) {

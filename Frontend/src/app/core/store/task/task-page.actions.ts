@@ -5,7 +5,6 @@ import { Task, CreateTaskDto, UpdateTaskDto, TaskStatus, TaskPriority } from '..
 export interface TaskFilters {
   status?: TaskStatus;
   priority?: TaskPriority;
-  assignedTo?: string;
   searchTerm?: string;
 }
 

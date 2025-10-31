@@ -33,12 +33,7 @@ public class GetAllTasksQueryHandler : IRequestHandler<GetAllTasksQuery, IEnumer
             filteredTasks = filteredTasks.Where(t => t.Priority == request.Priority.Value);
         }
 
-        if (!string.IsNullOrWhiteSpace(request.AssignedTo))
-        {
-            filteredTasks = filteredTasks.Where(t =>
-                t.AssignedTo != null &&
-                t.AssignedTo.Contains(request.AssignedTo, StringComparison.OrdinalIgnoreCase));
-        }
+        // AssignedTo filter removed - field no longer exists on TaskItem
 
         if (!string.IsNullOrWhiteSpace(request.SearchTerm))
         {

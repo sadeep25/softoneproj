@@ -17,7 +17,6 @@ export class TaskService {
     pageSize?: number;
     status?: string;
     priority?: string;
-    assignedTo?: string;
     searchTerm?: string;
   }): Observable<ApiResponse<Task[]>> {
     let httpParams = new HttpParams();

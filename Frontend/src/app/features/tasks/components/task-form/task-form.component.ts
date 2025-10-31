@@ -51,7 +51,6 @@ export class TaskFormComponent implements OnInit {
       title: [currentTask?.title || '', [Validators.required, Validators.minLength(2)]],
       description: [currentTask?.description || ''],
       priority: [currentTask?.priority || TaskPriority.Medium, [Validators.required]],
-      assignedTo: [currentTask?.assignedTo || ''],
       dueDate: [currentTask?.dueDate ? this.formatDateForInput(currentTask.dueDate) : ''],
       tags: [currentTask?.tags || '']
     });
@@ -75,7 +74,6 @@ export class TaskFormComponent implements OnInit {
       title: formValue.title,
       description: formValue.description || undefined,
       priority: formValue.priority,
-      assignedTo: formValue.assignedTo || undefined,
       dueDate: formValue.dueDate ? new Date(formValue.dueDate) : undefined,
       tags: formValue.tags || undefined
     };

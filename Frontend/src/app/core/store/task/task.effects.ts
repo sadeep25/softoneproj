@@ -26,7 +26,6 @@ export class TaskEffects {
         this.taskService.getTasks({
           status: filters.status,
           priority: filters.priority,
-          assignedTo: filters.assignedTo,
           searchTerm: filters.searchTerm
         }).pipe(
           map((response: ApiResponse<Task[]>) => {

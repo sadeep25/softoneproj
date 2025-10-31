@@ -14,9 +14,6 @@
 
   <div class="task-footer">
     <div class="task-meta">
-      @if (task().assignedTo) {
-        <span class="assignee">👤 {{ task().assignedTo }}</span>
-      }
       @if (task().dueDate) {
         <span class="due-date" [class.overdue]="isOverdue()">
           📅 {{ formattedDueDate() }}

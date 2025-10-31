@@ -28,8 +28,7 @@ namespace TaskManager.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("AssignedTo")
-                        .HasColumnType("nvarchar(max)");
+                    // AssignedTo property removed from model
 
                     b.Property<DateTime?>("CompletedAt")
                         .HasColumnType("datetime2");

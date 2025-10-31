@@ -72,7 +72,7 @@
         @if (viewMode() === 'list') {
           <app-task-list
             [tasks]="filteredTasks()"
-            (taskSelect)="onTaskSelect($event)"
+            (taskEdit)="onTaskSelect($event)"
             (taskUpdate)="onTaskUpdate($event)"
             (taskDelete)="onTaskDelete($event)">
           </app-task-list>
@@ -105,6 +105,14 @@
       mode="create"
       (save)="onSaveTask($event)"
       (cancel)="onCancelCreate()">
+    </app-task-form>
+  }
+  @if (selectedTask()) {
+    <app-task-form
+      mode="edit"
+      [task]="selectedTask() || undefined"
+      (save)="onSaveEdit($event)"
+      (cancel)="onCancelEdit()">
     </app-task-form>
   }
 </div>

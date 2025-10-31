@@ -10,6 +10,5 @@ public class CreateTaskCommand : IRequest<TaskDto>
     public string? Description { get; set; }
     public Priority Priority { get; set; }
     public DateTime? DueDate { get; set; }
-    public string? AssignedTo { get; set; }
     public string? Tags { get; set; }
 }

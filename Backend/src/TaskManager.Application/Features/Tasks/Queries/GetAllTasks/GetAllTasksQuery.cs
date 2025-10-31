@@ -9,6 +9,5 @@ public class GetAllTasksQuery : IRequest<IEnumerable<TaskDto>>
 {
     public TaskStatus? Status { get; set; }
     public Priority? Priority { get; set; }
-    public string? AssignedTo { get; set; }
     public string? SearchTerm { get; set; }
 }
