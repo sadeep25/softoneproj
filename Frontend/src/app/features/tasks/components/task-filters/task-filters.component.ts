@@ -1,7 +1,5 @@
-import { Component, input, output, computed, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Component, input, output, computed, signal, effect, ChangeDetectionStrategy, viewChild, ElementRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Subject, Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { TaskStatus, TaskPriority } from '../../../../core/models';
 
 export interface TaskFilters {
@@ -19,6 +17,11 @@ export interface TaskFilters {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaskFiltersComponent {
+  // Signal-based ViewChild references to form elements
+  searchInput = viewChild<ElementRef<HTMLInputElement>>('searchInput');
+  statusSelect = viewChild<ElementRef<HTMLSelectElement>>('statusSelect');
+  prioritySelect = viewChild<ElementRef<HTMLSelectElement>>('prioritySelect');
+
   // Signal-based inputs and outputs
   filters = input<TaskFilters>({});
   filtersChange = output<TaskFilters>();
@@ -43,17 +46,6 @@ export class TaskFiltersComponent {
     { value: TaskStatus.Cancelled, label: 'Cancelled' }
   ];
 
-  // RxJS subject to debounce search input
-  private search$ = new Subject<string>();
-  private searchSub: Subscription | null = null;
-
-  constructor() {
-    // Subscribe to search subject with debounce and emit filter updates
-    this.searchSub = this.search$
-      .pipe(debounceTime(500), distinctUntilChanged())
-      .subscribe((value) => this.updateFilters({ searchTerm: value || undefined }));
-  }
-
   priorityOptions = [
     { value: TaskPriority.Low, label: 'Low' },
     { value: TaskPriority.Medium, label: 'Medium' },
@@ -61,10 +53,31 @@ export class TaskFiltersComponent {
     { value: TaskPriority.Critical, label: 'Critical' }
   ];
 
+  // Signal-based debounce implementation
+  private searchTerm = signal<string>('');
+  private debounceTimer: ReturnType<typeof setTimeout> | null = null;
+
+  constructor() {
+    // Use effect to watch searchTerm signal and emit debounced updates
+    effect(() => {
+      const term = this.searchTerm();
+
+      // Clear previous timer
+      if (this.debounceTimer) {
+        clearTimeout(this.debounceTimer);
+      }
+
+      // Set new timer
+      this.debounceTimer = setTimeout(() => {
+        this.updateFilters({ searchTerm: term || undefined });
+      }, 500);
+    });
+  }
+
   onSearchChange(event: Event) {
     const target = event.target as HTMLInputElement;
-    // Push the raw input value to the subject — subscription will debounce
-    this.search$.next(target.value || '');
+    // Update the signal — effect will handle debouncing
+    this.searchTerm.set(target.value || '');
   }
 
   onStatusChange(event: Event) {
@@ -80,19 +93,34 @@ export class TaskFiltersComponent {
   // Assignee filter removed
 
   onClearFilters(): void {
+    // Clear any pending debounce timer
+    if (this.debounceTimer) {
+      clearTimeout(this.debounceTimer);
+      this.debounceTimer = null;
+    }
+
+    // Reset the internal searchTerm signal
+    this.searchTerm.set('');
+
+    // Reset form element values directly
+    const searchInputEl = this.searchInput();
+    if (searchInputEl) {
+      searchInputEl.nativeElement.value = '';
+    }
+    const statusSelectEl = this.statusSelect();
+    if (statusSelectEl) {
+      statusSelectEl.nativeElement.value = '';
+    }
+    const prioritySelectEl = this.prioritySelect();
+    if (prioritySelectEl) {
+      prioritySelectEl.nativeElement.value = '';
+    }
+
     this.filtersChange.emit({});
   }
 
   private updateFilters(updates: Partial<TaskFilters>): void {
     const newFilters = { ...this.filters(), ...updates };
     this.filtersChange.emit(newFilters);
-  }
-
-  ngOnDestroy(): void {
-    if (this.searchSub) {
-      this.searchSub.unsubscribe();
-      this.searchSub = null;
-    }
-    this.search$.complete();
   }
 }
