@@ -1,7 +1,9 @@
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using TaskManager.Application.Common;
 using TaskManager.Application.DTOs;
-using TaskManager.Application.Interfaces;
+using TaskManager.Application.Features.Auth.Commands.Login;
+using TaskManager.Application.Features.Auth.Queries.GetUserByUsername;
 
 namespace TaskManager.API.Controllers;
 
@@ -9,61 +11,52 @@ namespace TaskManager.API.Controllers;
 [Route("api/[controller]")]
 public class AuthController : ControllerBase
 {
-    private readonly IAuthService _authService;
+    private readonly IMediator _mediator;
     private readonly ILogger<AuthController> _logger;
 
-    public AuthController(IAuthService authService, ILogger<AuthController> logger)
+    public AuthController(IMediator mediator, ILogger<AuthController> logger)
     {
-        _authService = authService;
+        _mediator = mediator;
         _logger = logger;
     }
 
+    /// <summary>
+    /// Authenticates a user with username and password
+    /// </summary>
     [HttpPost("login")]
-    public async Task<ActionResult<ApiResponse<AuthResponseDto>>> Login([FromBody] LoginDto loginDto)
+    [ProducesResponseType(typeof(ApiResponse<AuthResponseDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<ApiResponse<AuthResponseDto>>> Login([FromBody] LoginCommand command)
     {
-        try
+        var result = await _mediator.Send(command);
+
+        if (result.Success)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ApiResponse<AuthResponseDto>.FailureResponse("Invalid input data"));
-            }
-
-            var result = await _authService.LoginAsync(loginDto);
-
-            if (result.Success)
-            {
-                _logger.LogInformation("User {Username} logged in successfully", loginDto.Username);
-                return Ok(ApiResponse<AuthResponseDto>.SuccessResponse(result));
-            }
-
-            _logger.LogWarning("Failed login attempt for username: {Username}", loginDto.Username);
-            return Unauthorized(ApiResponse<AuthResponseDto>.FailureResponse(result.Message ?? "Login failed"));
+            _logger.LogInformation("User {Username} logged in successfully", command.Username);
+            return Ok(ApiResponse<AuthResponseDto>.SuccessResponse(result, "Login successful"));
         }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error occurred during login for username: {Username}", loginDto.Username);
-            return StatusCode(500, ApiResponse<AuthResponseDto>.FailureResponse("An internal error occurred"));
-        }
+
+        _logger.LogWarning("Failed login attempt for username: {Username}", command.Username);
+        return Unauthorized(ApiResponse<AuthResponseDto>.FailureResponse(result.Message ?? "Login failed"));
     }
 
+    /// <summary>
+    /// Validates if a user exists by username
+    /// </summary>
     [HttpGet("validate/{username}")]
+    [ProducesResponseType(typeof(ApiResponse<UserDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<ApiResponse<UserDto>>> ValidateUser(string username)
     {
-        try
-        {
-            var user = await _authService.GetUserByUsernameAsync(username);
-            
-            if (user != null)
-            {
-                return Ok(ApiResponse<UserDto>.SuccessResponse(user));
-            }
+        var query = new GetUserByUsernameQuery { Username = username };
+        var user = await _mediator.Send(query);
 
-            return NotFound(ApiResponse<UserDto>.FailureResponse("User not found"));
-        }
-        catch (Exception ex)
+        if (user != null)
         {
-            _logger.LogError(ex, "Error occurred while validating user: {Username}", username);
-            return StatusCode(500, ApiResponse<UserDto>.FailureResponse("An internal error occurred"));
+            return Ok(ApiResponse<UserDto>.SuccessResponse(user, "User found"));
         }
+
+        return NotFound(ApiResponse<UserDto>.FailureResponse("User not found"));
     }
 }

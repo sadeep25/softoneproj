@@ -1,14 +1,15 @@
-import { Component, inject, OnInit, OnDestroy, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NgClass } from '@angular/common';
-import { Subject, takeUntil } from 'rxjs';
-import { NotificationService, NotificationMessage } from '../../../core/services/notification.service';
+import { Store } from '@ngrx/store';
+import * as NotificationSelectors from '../../../core/store/notification/notification.selectors';
+import * as NotificationActions from '../../../core/store/notification/notification.actions';
 
 @Component({
   selector: 'app-notification',
   template: `
     <div class="notification-container">
       @for (notification of notifications(); track notification.id) {
-        <div 
+        <div
           class="notification"
           [ngClass]="'notification-' + notification.type">
           <div class="notification-content">
@@ -17,7 +18,7 @@ import { NotificationService, NotificationMessage } from '../../../core/services
               <p class="notification-message">{{ notification.message }}</p>
             }
           </div>
-          <button 
+          <button
             class="notification-close"
             (click)="dismiss(notification.id)">
             ×
@@ -30,24 +31,13 @@ import { NotificationService, NotificationMessage } from '../../../core/services
   standalone: true,
   imports: [NgClass]
 })
-export class NotificationComponent implements OnInit, OnDestroy {
-  private notificationService = inject(NotificationService);
-  private destroy$ = new Subject<void>();
+export class NotificationComponent {
+  private store = inject(Store);
 
-  notifications = signal<NotificationMessage[]>([]);
-
-  ngOnInit(): void {
-    this.notificationService.messages$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(messages => this.notifications.set(messages));
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
+  // Use store signal selector
+  notifications = this.store.selectSignal(NotificationSelectors.selectAllNotifications);
 
   dismiss(id: string): void {
-    this.notificationService.remove(id);
+    this.store.dispatch(NotificationActions.removeNotification({ id }));
   }
 }

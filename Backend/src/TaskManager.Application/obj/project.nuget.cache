@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "EK2T5tFIQvc=",
+  "dgSpecHash": "yDmevJy5Br4=",
   "success": true,
   "projectFilePath": "C:\\Users\\sadee\\OneDrive\\Desktop\\softoneproj\\Backend\\src\\TaskManager.Application\\TaskManager.Application.csproj",
   "expectedPackageFiles": [
@@ -19,20 +19,7 @@
     "C:\\Users\\sadee\\.nuget\\packages\\microsoft.identitymodel.jsonwebtokens\\8.14.0\\microsoft.identitymodel.jsonwebtokens.8.14.0.nupkg.sha512",
     "C:\\Users\\sadee\\.nuget\\packages\\microsoft.identitymodel.logging\\8.14.0\\microsoft.identitymodel.logging.8.14.0.nupkg.sha512",
     "C:\\Users\\sadee\\.nuget\\packages\\microsoft.identitymodel.tokens\\8.14.0\\microsoft.identitymodel.tokens.8.14.0.nupkg.sha512",
-    "C:\\Users\\sadee\\.nuget\\packages\\system.identitymodel.tokens.jwt\\6.30.0\\system.identitymodel.tokens.jwt.6.30.0.nupkg.sha512"
+    "C:\\Users\\sadee\\.nuget\\packages\\system.identitymodel.tokens.jwt\\8.14.0\\system.identitymodel.tokens.jwt.8.14.0.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1902",
-      "level": "Warning",
-      "message": "Package 'System.IdentityModel.Tokens.Jwt' 6.30.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-59j7-ghrg-fj52",
-      "projectPath": "C:\\Users\\sadee\\OneDrive\\Desktop\\softoneproj\\Backend\\src\\TaskManager.Application\\TaskManager.Application.csproj",
-      "warningLevel": 1,
-      "filePath": "C:\\Users\\sadee\\OneDrive\\Desktop\\softoneproj\\Backend\\src\\TaskManager.Application\\TaskManager.Application.csproj",
-      "libraryId": "System.IdentityModel.Tokens.Jwt",
-      "targetGraphs": [
-        "net10.0"
-      ]
-    }
-  ]
+  "logs": []
 }

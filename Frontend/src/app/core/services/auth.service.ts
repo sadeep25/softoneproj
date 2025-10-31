@@ -12,6 +12,7 @@ export class AuthService {
   private readonly apiUrl = `${environment.apiUrl}/api/auth`;
   private readonly tokenKey = 'task_manager_token';
   private readonly refreshTokenKey = 'task_manager_refresh_token';
+  private readonly userKey = 'task_manager_user';
   private readonly loggedInKey = 'task_manager_logged_in';
 
   constructor(private http: HttpClient) {}
@@ -21,6 +22,9 @@ export class AuthService {
       map(response => {
         if (response.success && response.data) {
           this.storeTokens(response.data.token, response.data.refreshToken);
+          if (response.data.user) {
+            localStorage.setItem(this.userKey, JSON.stringify(response.data.user));
+          }
           // If backend doesn't emit tokens (e.g. Token is null), set a fallback logged-in flag
           if (!response.data.token && response.data.user) {
             localStorage.setItem(this.loggedInKey, '1');
@@ -32,15 +36,8 @@ export class AuthService {
     );
   }
 
-  logout(): Observable<void> {
-    return this.http.post<ApiResponse<void>>(`${this.apiUrl}/logout`, {}).pipe(
-      tap(() => this.clearTokens()),
-      map(() => undefined),
-      catchError(err => {
-        this.clearTokens();
-        throw err;
-      })
-    );
+  logout(): void {
+    this.clearTokens();
   }
 
   refreshToken(): Observable<string | null> {
@@ -108,9 +105,22 @@ export class AuthService {
     }
   }
 
-  private clearTokens(): void {
+  clearTokens(): void {
     localStorage.removeItem(this.tokenKey);
     localStorage.removeItem(this.refreshTokenKey);
+    localStorage.removeItem(this.userKey);
     localStorage.removeItem(this.loggedInKey);
+  }
+
+  getStoredUser(): User | null {
+    const userJson = localStorage.getItem(this.userKey);
+    if (userJson) {
+      try {
+        return JSON.parse(userJson) as User;
+      } catch {
+        return null;
+      }
+    }
+    return null;
   }
 }

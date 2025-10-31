@@ -1,5 +1,8 @@
+import { LoadingState } from './loading/loading.reducer';
+import { NotificationState } from './notification/notification.reducer';
+
 // Root application state
-// Extended by feature states
-export interface State {
-  // Future: Add other feature states here
+export interface AppState {
+  loading: LoadingState;
+  notification: NotificationState;
 }

@@ -1,9 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
-import { AuthService } from '../../../../core/services/auth.service';
-import { LoginRequest } from '../../../../core/models';
+import { Store } from '@ngrx/store';
+import { Subject, takeUntil } from 'rxjs';
+import * as AuthPageActions from '../../../../core/store/auth/auth-page.actions';
+import * as AuthSelectors from '../../../../core/store/auth/auth.selectors';
 
 @Component({
   selector: 'app-login',
@@ -43,16 +44,12 @@ import { LoginRequest } from '../../../../core/models';
             </div>
           </div>
 
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             class="login-button"
-            [disabled]="loginForm.invalid || isLoading">
-            {{ isLoading ? 'Logging in...' : 'Login' }}
+            [disabled]="loginForm.invalid || (isLoading$ | async)">
+            {{ (isLoading$ | async) ? 'Logging in...' : 'Login' }}
           </button>
-
-          <div class="error-message" *ngIf="errorMessage">
-            {{ errorMessage }}
-          </div>
         </form>
 
         <div class="demo-credentials">
@@ -171,20 +168,24 @@ import { LoginRequest } from '../../../../core/models';
     }
   `]
 })
-export class LoginComponent {
+export class LoginComponent implements OnDestroy {
   private fb = inject(FormBuilder);
-  private router = inject(Router);
-  private authService = inject(AuthService);
+  private store = inject(Store);
+  private destroy$ = new Subject<void>();
 
   loginForm: FormGroup;
-  isLoading = false;
-  errorMessage = '';
+  isLoading$ = this.store.select(AuthSelectors.getLoading);
 
   constructor() {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   isFieldInvalid(fieldName: string): boolean {
@@ -194,23 +195,8 @@ export class LoginComponent {
 
   onSubmit() {
     if (this.loginForm.valid) {
-      this.isLoading = true;
-      this.errorMessage = '';
-
-      const loginRequest: LoginRequest = this.loginForm.value;
-
-      this.authService.login(loginRequest).subscribe({
-        next: (response) => {
-          this.isLoading = false;
-          // Login successful, navigate to tasks
-          this.router.navigate(['/tasks']);
-        },
-        error: (error: any) => {
-          this.isLoading = false;
-          this.errorMessage = error.message || 'An error occurred during login. Please try again.';
-          console.error('Login error:', error);
-        }
-      });
+      this.store.dispatch(AuthPageActions.clearError());
+      this.store.dispatch(AuthPageActions.login({ credentials: this.loginForm.value }));
     } else {
       // Mark all fields as touched to show validation errors
       Object.keys(this.loginForm.controls).forEach(key => {

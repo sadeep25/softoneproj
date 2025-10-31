@@ -14,7 +14,7 @@
           "FluentValidation.DependencyInjectionExtensions": "12.0.0",
           "MediatR": "13.1.0",
           "Microsoft.Extensions.Configuration.Abstractions": "8.0.0",
-          "System.IdentityModel.Tokens.Jwt": "6.30.0",
+          "System.IdentityModel.Tokens.Jwt": "8.14.0",
           "TaskManager.Domain": "1.0.0"
         },
         "runtime": {
@@ -175,15 +175,15 @@
           }
         }
       },
-      "System.IdentityModel.Tokens.Jwt/6.30.0": {
+      "System.IdentityModel.Tokens.Jwt/8.14.0": {
         "dependencies": {
           "Microsoft.IdentityModel.JsonWebTokens": "8.14.0",
           "Microsoft.IdentityModel.Tokens": "8.14.0"
         },
         "runtime": {
-          "lib/net6.0/System.IdentityModel.Tokens.Jwt.dll": {
-            "assemblyVersion": "6.30.0.0",
-            "fileVersion": "6.30.0.40426"
+          "lib/net9.0/System.IdentityModel.Tokens.Jwt.dll": {
+            "assemblyVersion": "8.14.0.0",
+            "fileVersion": "8.14.0.60815"
           }
         }
       },
@@ -308,12 +308,12 @@
       "path": "microsoft.identitymodel.tokens/8.14.0",
       "hashPath": "microsoft.identitymodel.tokens.8.14.0.nupkg.sha512"
     },
-    "System.IdentityModel.Tokens.Jwt/6.30.0": {
+    "System.IdentityModel.Tokens.Jwt/8.14.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-pa9cQqPoCA03v512SjikM0xNDVW9/jUaSxAEupqtngAKjp6exElng1E47iXE0ewRjk3xqHa0vJE3x19h1a29OQ==",
-      "path": "system.identitymodel.tokens.jwt/6.30.0",
-      "hashPath": "system.identitymodel.tokens.jwt.6.30.0.nupkg.sha512"
+      "sha512": "sha512-EYGgN/S+HK7S6F3GaaPLFAfK0UzMrkXFyWCvXpQWFYmZln3dqtbyIO7VuTM/iIIPMzkelg8ZLlBPvMhxj6nOAA==",
+      "path": "system.identitymodel.tokens.jwt/8.14.0",
+      "hashPath": "system.identitymodel.tokens.jwt.8.14.0.nupkg.sha512"
     },
     "TaskManager.Domain/1.0.0": {
       "type": "project",

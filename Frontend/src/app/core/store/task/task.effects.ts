@@ -2,11 +2,11 @@ import { Injectable, inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
-import { map, catchError, mergeMap, concatMap, tap, withLatestFrom } from 'rxjs/operators';
+import { map, catchError, mergeMap, concatMap, withLatestFrom } from 'rxjs/operators';
 import { TaskService } from '../../services/task.service';
-import { NotificationService } from '../../services/notification.service';
 import * as TaskPageActions from './task-page.actions';
 import * as TaskApiActions from './task-api.actions';
+import * as NotificationActions from '../notification/notification.actions';
 import { ApiResponse, Task } from '../../models';
 import { getFilters } from './task.selectors';
 
@@ -15,9 +15,8 @@ export class TaskEffects {
   private actions$ = inject(Actions);
   private store = inject(Store);
   private taskService = inject(TaskService);
-  private notificationService = inject(NotificationService);
 
-  // Load Tasks Effect
+  // Load Tasks Effect with server-side filtering
   loadTasks$ = createEffect(() =>
     this.actions$.pipe(
       ofType(TaskPageActions.loadTasks),
@@ -37,17 +36,27 @@ export class TaskEffects {
               });
             }
           }),
-          catchError((error: Error) =>
-            of(TaskApiActions.loadTasksFailure({
-              error: error.message || 'Unknown error occurred'
-            }))
-          )
+          catchError((error: any) => {
+            let errorMessage = 'Failed to load tasks';
+
+            if (error.status === 0) {
+              errorMessage = 'Unable to connect to the server';
+            } else if (error.status === 401) {
+              errorMessage = 'Your session has expired. Please log in again';
+            } else if (error.status === 500) {
+              errorMessage = 'Server error occurred. Please try again later';
+            } else if (error.error?.message) {
+              errorMessage = error.error.message;
+            }
+
+            return of(TaskApiActions.loadTasksFailure({ error: errorMessage }));
+          })
         )
       )
     )
   );
 
-  // Reload tasks when filters change
+  // Reload tasks when filters change (server-side filtering)
   reloadTasksOnFilterChange$ = createEffect(() =>
     this.actions$.pipe(
       ofType(TaskPageActions.setFilters, TaskPageActions.clearFilters),
@@ -70,11 +79,19 @@ export class TaskEffects {
               });
             }
           }),
-          catchError((error: Error) =>
-            of(TaskApiActions.createTaskFailure({
-              error: error.message || 'Failed to create task'
-            }))
-          )
+          catchError((error: any) => {
+            let errorMessage = 'Failed to create task';
+
+            if (error.status === 0) {
+              errorMessage = 'Unable to connect to the server';
+            } else if (error.status === 401) {
+              errorMessage = 'Your session has expired. Please log in again';
+            } else if (error.error?.message) {
+              errorMessage = error.error.message;
+            }
+
+            return of(TaskApiActions.createTaskFailure({ error: errorMessage }));
+          })
         )
       )
     )
@@ -95,11 +112,19 @@ export class TaskEffects {
               });
             }
           }),
-          catchError((error: Error) =>
-            of(TaskApiActions.updateTaskFailure({
-              error: error.message || 'Failed to update task'
-            }))
-          )
+          catchError((error: any) => {
+            let errorMessage = 'Failed to update task';
+
+            if (error.status === 0) {
+              errorMessage = 'Unable to connect to the server';
+            } else if (error.status === 401) {
+              errorMessage = 'Your session has expired. Please log in again';
+            } else if (error.error?.message) {
+              errorMessage = error.error.message;
+            }
+
+            return of(TaskApiActions.updateTaskFailure({ error: errorMessage }));
+          })
         )
       )
     )
@@ -120,92 +145,111 @@ export class TaskEffects {
               });
             }
           }),
-          catchError((error: Error) =>
-            of(TaskApiActions.deleteTaskFailure({
-              error: error.message || 'Failed to delete task'
-            }))
-          )
+          catchError((error: any) => {
+            let errorMessage = 'Failed to delete task';
+
+            if (error.status === 0) {
+              errorMessage = 'Unable to connect to the server';
+            } else if (error.status === 401) {
+              errorMessage = 'Your session has expired. Please log in again';
+            } else if (error.error?.message) {
+              errorMessage = error.error.message;
+            }
+
+            return of(TaskApiActions.deleteTaskFailure({ error: errorMessage }));
+          })
         )
       )
     )
   );
 
   // Success Notifications
-  createTaskSuccess$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(TaskApiActions.createTaskSuccess),
-        tap(() => {
-          this.notificationService.success('Success', 'Task created successfully');
+  createTaskSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TaskApiActions.createTaskSuccess),
+      map(() =>
+        NotificationActions.showSuccess({
+          title: 'Success',
+          message: 'Task created successfully'
         })
-      ),
-    { dispatch: false }
+      )
+    )
   );
 
-  updateTaskSuccess$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(TaskApiActions.updateTaskSuccess),
-        tap(() => {
-          this.notificationService.success('Success', 'Task updated successfully');
+  updateTaskSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TaskApiActions.updateTaskSuccess),
+      map(() =>
+        NotificationActions.showSuccess({
+          title: 'Success',
+          message: 'Task updated successfully'
         })
-      ),
-    { dispatch: false }
+      )
+    )
   );
 
-  deleteTaskSuccess$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(TaskApiActions.deleteTaskSuccess),
-        tap(() => {
-          this.notificationService.success('Success', 'Task deleted successfully');
+  deleteTaskSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TaskApiActions.deleteTaskSuccess),
+      map(() =>
+        NotificationActions.showSuccess({
+          title: 'Success',
+          message: 'Task deleted successfully'
         })
-      ),
-    { dispatch: false }
+      )
+    )
   );
 
   // Error Notifications
-  loadTasksFailure$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(TaskApiActions.loadTasksFailure),
-        tap(action => {
-          this.notificationService.error('Load Failed', action.error);
+  loadTasksFailure$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TaskApiActions.loadTasksFailure),
+      map(action =>
+        NotificationActions.showError({
+          title: 'Load Failed',
+          message: action.error,
+          persistent: true
         })
-      ),
-    { dispatch: false }
+      )
+    )
   );
 
-  createTaskFailure$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(TaskApiActions.createTaskFailure),
-        tap(action => {
-          this.notificationService.error('Creation Failed', action.error);
+  createTaskFailure$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TaskApiActions.createTaskFailure),
+      map(action =>
+        NotificationActions.showError({
+          title: 'Creation Failed',
+          message: action.error,
+          persistent: true
         })
-      ),
-    { dispatch: false }
+      )
+    )
   );
 
-  updateTaskFailure$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(TaskApiActions.updateTaskFailure),
-        tap(action => {
-          this.notificationService.error('Update Failed', action.error);
+  updateTaskFailure$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TaskApiActions.updateTaskFailure),
+      map(action =>
+        NotificationActions.showError({
+          title: 'Update Failed',
+          message: action.error,
+          persistent: true
         })
-      ),
-    { dispatch: false }
+      )
+    )
   );
 
-  deleteTaskFailure$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(TaskApiActions.deleteTaskFailure),
-        tap(action => {
-          this.notificationService.error('Deletion Failed', action.error);
+  deleteTaskFailure$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TaskApiActions.deleteTaskFailure),
+      map(action =>
+        NotificationActions.showError({
+          title: 'Deletion Failed',
+          message: action.error,
+          persistent: true
         })
-      ),
-    { dispatch: false }
+      )
+    )
   );
 }

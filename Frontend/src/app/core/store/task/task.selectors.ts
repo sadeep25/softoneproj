@@ -32,7 +32,7 @@ export const getFilters = createSelector(
 );
 
 // Complex selectors
-// Note: Filtering is now done server-side, so getFilteredTasks just returns all tasks
+// Server-side filtering - tasks are already filtered from API
 export const getFilteredTasks = createSelector(
   getTasks,
   (tasks) => tasks

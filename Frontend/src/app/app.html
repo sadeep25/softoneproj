@@ -5,15 +5,28 @@
         <span class="app-icon">📋</span>
         TaskManager
       </h1>
-      <nav class="app-nav">
-        <a routerLink="/tasks" routerLinkActive="active">Tasks</a>
-      </nav>
+      <div class="header-actions">
+        @if (isAuthenticated()) {
+          <span class="user-name">{{ userName() }}</span>
+          <button class="btn btn-secondary" (click)="onLogout()">
+            🚪 Logout
+          </button>
+        } @else if (!isLoginPage()) {
+          <button class="btn btn-primary" (click)="onLogin()">
+            🔑 Login
+          </button>
+        }
+      </div>
     </div>
   </header>
 
   <main class="app-main">
     <router-outlet></router-outlet>
   </main>
+
+  @if (isLoading()) {
+    <app-loading-spinner [overlay]="true" message="Loading..."></app-loading-spinner>
+  }
 
   <app-notification></app-notification>
 </div>

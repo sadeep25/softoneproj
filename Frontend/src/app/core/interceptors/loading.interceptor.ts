@@ -1,21 +1,22 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { finalize } from 'rxjs';
-import { LoadingService } from '../services/loading.service';
+import * as LoadingActions from '../store/loading/loading.actions';
 
 export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
-  const loadingService = inject(LoadingService);
-  
+  const store = inject(Store);
+
   // Create operation identifier
   const operation = `${req.method} ${req.url}`;
-  
-  // Start loading
-  loadingService.setLoading(true, operation);
+
+  // Dispatch start loading action
+  store.dispatch(LoadingActions.startLoading({ operation }));
 
   return next(req).pipe(
     finalize(() => {
-      // Stop loading
-      loadingService.setLoading(false, operation);
+      // Dispatch stop loading action
+      store.dispatch(LoadingActions.stopLoading({ operation }));
     })
   );
 };

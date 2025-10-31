@@ -590,7 +590,7 @@
             },
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",
-              "version": "[6.30.0, )"
+              "version": "[8.14.0, )"
             }
           },
           "imports": [

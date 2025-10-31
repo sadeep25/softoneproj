@@ -51,31 +51,17 @@
         [disabled]="isLoading()">
         ➕ Create Task
       </button>
-
-      <button
-        class="btn btn-secondary"
-        (click)="onLogout()">
-        🚪 Logout
-      </button>
     </div>
   </header>
 
   <main class="tasks-main">
-    @if (isLoading()) {
-      <app-loading-spinner message="Loading tasks..."></app-loading-spinner>
-    }
-
-    @if (hasError()) {
-      <app-error-message
-        [message]="error()!"
-        [showRetry]="true"
-        (retry)="onRetry()">
-      </app-error-message>
-    }
-
-    @if (!isLoading() && !hasError()) {
-      <div class="tasks-content">
-        @if (viewMode() === 'list') {
+    <div class="tasks-content">
+      <!-- Show loading spinner only on initial load (when no tasks exist yet) -->
+      @if (isLoading() && tasks().length === 0) {
+        <app-loading-spinner message="Loading tasks..."></app-loading-spinner>
+      } @else {
+        <!-- Always show content area to prevent flickering -->
+        @if (viewMode() === 'list' && filteredTasks().length > 0) {
           <app-task-list
             [tasks]="filteredTasks()"
             (taskEdit)="onTaskSelect($event)"
@@ -84,7 +70,7 @@
           </app-task-list>
         }
 
-        @if (viewMode() === 'board') {
+        @if (viewMode() === 'board' && filteredTasks().length > 0) {
           <app-task-board
             [tasksByStatus]="tasksByStatus()"
             (taskMove)="onTaskMove($event)"
@@ -92,18 +78,32 @@
           </app-task-board>
         }
 
-        @if (isEmpty() && !isLoading()) {
+        <!-- Empty state when no tasks match filters -->
+        @if (filteredTasks().length === 0 && !isLoading()) {
           <div class="empty-state">
             <div class="empty-icon">📋</div>
-            <h3>No tasks yet</h3>
-            <p>Create your first task to get started with task management.</p>
-            <button class="btn btn-primary" (click)="onCreateTask()">
-              Create Your First Task
-            </button>
+            @if (tasks().length === 0) {
+              <h3>No tasks yet</h3>
+              <p>Create your first task to get started with task management.</p>
+              <button class="btn btn-primary" (click)="onCreateTask()">
+                Create Your First Task
+              </button>
+            } @else {
+              <h3>No tasks found</h3>
+              <p>No tasks match your current filters. Try adjusting your search criteria.</p>
+            }
           </div>
         }
-      </div>
-    }
+
+        <!-- Subtle loading indicator during filter refresh -->
+        @if (isLoading() && tasks().length > 0) {
+          <div class="filter-loading-indicator">
+            <div class="spinner-small"></div>
+            <span>Refreshing...</span>
+          </div>
+        }
+      }
+    </div>
   </main>
 
   @if (showCreateForm()) {

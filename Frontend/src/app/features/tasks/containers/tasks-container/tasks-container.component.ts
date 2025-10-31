@@ -1,10 +1,7 @@
 import { Component, OnInit, signal, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Router } from '@angular/router';
-import { AuthService } from '../../../../core/services/auth.service';
 import { Task, TaskStatus, CreateTaskDto, UpdateTaskDto } from '../../../../core/models';
 import { LoadingSpinnerComponent } from '../../../../shared/components/loading-spinner/loading-spinner.component';
-import { ErrorMessageComponent } from '../../../../shared/components/error-message/error-message.component';
 import { TaskBoardComponent } from '../../components/task-board/task-board.component';
 import { TaskListComponent } from '../../components/task-list/task-list.component';
 import { TaskFiltersComponent, TaskFilters } from '../../components/task-filters/task-filters.component';
@@ -19,7 +16,6 @@ import * as fromTask from '../../../../core/store/task';
   standalone: true,
   imports: [
     LoadingSpinnerComponent,
-    ErrorMessageComponent,
     TaskBoardComponent,
     TaskListComponent,
     TaskFiltersComponent,
@@ -29,8 +25,6 @@ import * as fromTask from '../../../../core/store/task';
 export class TasksContainerComponent implements OnInit {
   // Inject dependencies
   private readonly store = inject(Store);
-  private readonly authService = inject(AuthService);
-  private readonly router = inject(Router);
 
   // Signals from store using selectSignal
   tasks = this.store.selectSignal(fromTask.getTasks);
@@ -38,8 +32,6 @@ export class TasksContainerComponent implements OnInit {
   tasksByStatus = this.store.selectSignal(fromTask.getTasksByStatus);
   taskStats = this.store.selectSignal(fromTask.getTaskStats);
   isLoading = this.store.selectSignal(fromTask.getIsLoading);
-  hasError = this.store.selectSignal(fromTask.getHasError);
-  error = this.store.selectSignal(fromTask.getError);
   isEmpty = this.store.selectSignal(fromTask.getIsEmpty);
   filters = this.store.selectSignal(fromTask.getFilters);
   selectedTask = this.store.selectSignal(fromTask.getSelectedTask);
@@ -107,22 +99,5 @@ export class TasksContainerComponent implements OnInit {
 
   onCancelEdit(): void {
     this.store.dispatch(TaskPageActions.clearCurrentTask());
-  }
-
-  onRetry(): void {
-    this.store.dispatch(TaskPageActions.clearError());
-    this.store.dispatch(TaskPageActions.loadTasks());
-  }
-
-  onLogout(): void {
-    this.authService.logout().subscribe({
-      next: () => {
-        this.router.navigate(['/login']);
-      },
-      error: () => {
-        // Even if logout fails on server, clear local state and redirect
-        this.router.navigate(['/login']);
-      }
-    });
   }
 }
