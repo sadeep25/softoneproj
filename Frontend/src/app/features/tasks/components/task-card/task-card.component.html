@@ -1,4 +1,4 @@
-<div class="task-card" [class]="priorityClass()">
+<div class="task-card" [class]="priorityClass()" (click)="onSelect()">
   <div class="task-header">
     <h4 class="task-title">{{ task().title }}</h4>
     <div class="task-priority">

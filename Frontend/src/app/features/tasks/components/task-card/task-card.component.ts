@@ -12,6 +12,8 @@ export class TaskCardComponent {
   // Signal-based inputs and outputs
   task = input.required<Task>();
   statusChange = output<TaskStatus>();
+  // Emit when the card is clicked/selected
+  select = output<Task>();
 
   // Computed signals for derived values
   priorityClass = computed(() => `priority-${this.task().priority.toLowerCase()}`);
@@ -39,5 +41,9 @@ export class TaskCardComponent {
   onStatusChange(event: Event): void {
     const target = event.target as HTMLSelectElement;
     this.statusChange.emit(target.value as TaskStatus);
+  }
+
+  onSelect(): void {
+    this.select.emit(this.task());
   }
 }

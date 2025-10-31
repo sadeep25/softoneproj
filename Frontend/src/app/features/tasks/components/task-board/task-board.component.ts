@@ -1,4 +1,4 @@
-import { Component, input, output, ChangeDetectionStrategy } from '@angular/core';
+import { Component, input, output, ChangeDetectionStrategy, computed } from '@angular/core';
 import { Task, TaskStatus } from '../../../../core/models';
 import { TaskCardComponent } from '../task-card/task-card.component';
 
@@ -26,28 +26,16 @@ export class TaskBoardComponent {
     this.taskSelect.emit(task);
   }
 
-  columns = [
-    { status: TaskStatus.ToDo, title: 'To Do' },
-    { status: TaskStatus.InProgress, title: 'In Progress' },
-    { status: TaskStatus.Done, title: 'Done' },
-    { status: TaskStatus.Cancelled, title: 'Cancelled' }
-  ];
-
-  getTasksForStatus(status: TaskStatus): Task[] {
-    const tasks = this.tasksByStatus();
-    switch (status) {
-      case TaskStatus.ToDo:
-        return tasks.toDo || [];
-      case TaskStatus.InProgress:
-        return tasks.inProgress || [];
-      case TaskStatus.Done:
-        return tasks.done || [];
-      case TaskStatus.Cancelled:
-        return tasks.cancelled || [];
-      default:
-        return [];
-    }
-  }
+  // Compute columns once from the incoming signal to avoid calling functions from templates
+  readonly columns = computed(() => {
+    const s = this.tasksByStatus ? this.tasksByStatus() : { toDo: [], inProgress: [], done: [], cancelled: [] };
+    return [
+      { status: TaskStatus.ToDo, title: 'To Do', tasks: s.toDo || [] as Task[] },
+      { status: TaskStatus.InProgress, title: 'In Progress', tasks: s.inProgress || [] as Task[] },
+      { status: TaskStatus.Done, title: 'Done', tasks: s.done || [] as Task[] },
+      { status: TaskStatus.Cancelled, title: 'Cancelled', tasks: s.cancelled || [] as Task[] }
+    ];
+  });
 
   onStatusChange(taskId: string, newStatus: TaskStatus) {
     this.taskMove.emit({ taskId, newStatus });
