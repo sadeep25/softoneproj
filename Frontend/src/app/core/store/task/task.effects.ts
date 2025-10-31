@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
-import { map, catchError, mergeMap, concatMap, withLatestFrom } from 'rxjs/operators';
+import { map, catchError, mergeMap, concatMap, withLatestFrom, delay } from 'rxjs/operators';
 import { TaskService } from '../../services/task.service';
 import * as TaskPageActions from './task-page.actions';
 import * as TaskApiActions from './task-api.actions';
@@ -60,6 +60,8 @@ export class TaskEffects {
   reloadTasksOnFilterChange$ = createEffect(() =>
     this.actions$.pipe(
       ofType(TaskPageActions.setFilters, TaskPageActions.clearFilters),
+      // Add a microtask delay to ensure the reducer has updated the state
+      delay(0),
       map(() => TaskPageActions.loadTasks())
     )
   );
