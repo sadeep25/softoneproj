@@ -1,0 +1,32 @@
+# .NET Build outputs
+**/bin/
+**/obj/
+**/[Dd]ebug/
+**/[Rr]elease/
+**/.vs/
+**/.vscode/
+*.user
+*.suo
+*.cache
+*.log
+
+# Angular Build outputs
+**/dist/
+**/.angular/
+**/node_modules/
+
+# Angular cache
+**/.angular/cache/
+
+# IDE
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local settings
+.claude/settings.local.json
