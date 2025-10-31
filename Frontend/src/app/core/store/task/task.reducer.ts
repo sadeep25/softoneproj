@@ -139,15 +139,24 @@ export const taskReducer = createReducer<TaskState>(
     };
   }),
   on(TaskPageActions.setFilters, (state, action): TaskState => {
-    // Merge filters, but remove any properties with undefined values
-    const newFilters = { ...state.filters, ...action.filters };
+    // If action.filters is an empty object with no keys, clear all filters
+    const actionHasNoKeys = Object.keys(action.filters).length === 0;
 
-    // Remove undefined properties from the filters object
-    Object.keys(newFilters).forEach(key => {
-      if (newFilters[key as keyof TaskFilters] === undefined) {
-        delete newFilters[key as keyof TaskFilters];
-      }
-    });
+    let newFilters: TaskFilters;
+    if (actionHasNoKeys) {
+      // Empty object means clear all filters
+      newFilters = {};
+    } else {
+      // Merge filters, but remove any properties with undefined values
+      newFilters = { ...state.filters, ...action.filters };
+
+      // Remove undefined properties from the filters object
+      Object.keys(newFilters).forEach(key => {
+        if (newFilters[key as keyof TaskFilters] === undefined) {
+          delete newFilters[key as keyof TaskFilters];
+        }
+      });
+    }
 
     return {
       ...state,

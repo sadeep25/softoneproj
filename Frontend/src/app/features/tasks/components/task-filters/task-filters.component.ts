@@ -1,4 +1,4 @@
-import { Component, input, output, computed, signal, effect, ChangeDetectionStrategy, viewChild, ElementRef } from '@angular/core';
+import { Component, computed, signal, effect, ChangeDetectionStrategy, viewChild, ElementRef, input, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TaskStatus, TaskPriority } from '../../../../core/models';
 
@@ -17,14 +17,17 @@ export interface TaskFilters {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaskFiltersComponent {
+  // Inputs
+  filters = input<TaskFilters>({});
+
+  // Outputs
+  filtersChange = output<TaskFilters>();
+  clearFilters = output<void>();
+
   // Signal-based ViewChild references to form elements
   searchInput = viewChild<ElementRef<HTMLInputElement>>('searchInput');
   statusSelect = viewChild<ElementRef<HTMLSelectElement>>('statusSelect');
   prioritySelect = viewChild<ElementRef<HTMLSelectElement>>('prioritySelect');
-
-  // Signal-based inputs and outputs
-  filters = input<TaskFilters>({});
-  filtersChange = output<TaskFilters>();
 
   // Computed signals for current filter values
   currentSearchTerm = computed(() => this.filters().searchTerm || '');
@@ -35,7 +38,6 @@ export class TaskFiltersComponent {
 
   hasActiveFilters = computed(() => {
     const currentFilters = this.filters();
-    // ignore assignedTo (removed)
     return [currentFilters.searchTerm, currentFilters.status, currentFilters.priority].some(value => value !== undefined && value !== '');
   });
 
@@ -69,7 +71,7 @@ export class TaskFiltersComponent {
 
       // Set new timer
       this.debounceTimer = setTimeout(() => {
-        this.updateFilters({ searchTerm: term || undefined });
+        this.emitFilters({ searchTerm: term || undefined });
       }, 500);
     });
   }
@@ -82,15 +84,19 @@ export class TaskFiltersComponent {
 
   onStatusChange(event: Event) {
     const target = event.target as HTMLSelectElement;
-    this.updateFilters({ status: (target.value as TaskStatus) || undefined });
+    const value = target.value as TaskStatus;
+
+    // Emit filter change
+    this.emitFilters({ status: value || undefined });
   }
 
   onPriorityChange(event: Event) {
     const target = event.target as HTMLSelectElement;
-    this.updateFilters({ priority: (target.value as TaskPriority) || undefined });
-  }
+    const value = target.value as TaskPriority;
 
-  // Assignee filter removed
+    // Emit filter change
+    this.emitFilters({ priority: value || undefined });
+  }
 
   onClearFilters(): void {
     // Clear any pending debounce timer
@@ -116,23 +122,14 @@ export class TaskFiltersComponent {
       prioritySelectEl.nativeElement.value = '';
     }
 
-    this.filtersChange.emit({});
+    // Emit clear filters event
+    this.clearFilters.emit();
   }
 
-  private updateFilters(updates: Partial<TaskFilters>): void {
-    // Start with current filters from the store
+  private emitFilters(updates: Partial<TaskFilters>): void {
+    // Merge current filters with updates and emit
     const currentFilters = this.filters();
-
-    // Create new filters object by merging updates
-    const newFilters: TaskFilters = { ...currentFilters, ...updates };
-
-    // Remove undefined values - they should clear the filter
-    Object.keys(newFilters).forEach(key => {
-      if (newFilters[key as keyof TaskFilters] === undefined) {
-        delete newFilters[key as keyof TaskFilters];
-      }
-    });
-
-    this.filtersChange.emit(newFilters);
+    const updatedFilters = { ...currentFilters, ...updates };
+    this.filtersChange.emit(updatedFilters);
   }
 }

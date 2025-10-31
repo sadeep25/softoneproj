@@ -49,8 +49,8 @@ export const authReducer = createReducer<AuthState>(
   on(AuthApiActions.loginSuccess, (state, action): AuthState => {
     return {
       ...state,
-      user: action.response.user || null,
-      token: action.response.token || null,
+      user: action.response.data.user || null,
+      token: action.response.data.token || null,
       loading: false,
       error: null,
       isAuthenticated: true

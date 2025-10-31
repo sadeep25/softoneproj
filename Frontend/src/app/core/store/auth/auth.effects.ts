@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { map, catchError, exhaustMap, tap } from 'rxjs/operators';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../../features/auth/services/auth.service';
 import * as AuthPageActions from './auth-page.actions';
 import * as AuthApiActions from './auth-api.actions';
 import * as NotificationActions from '../notification/notification.actions';
@@ -19,11 +19,19 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(AuthPageActions.init),
       map(() => {
-        const user = this.authService.getStoredUser();
-        const token = this.authService.getToken();
+        const userJson = localStorage.getItem('currentUser');
+        const token = localStorage.getItem('token');
 
-        if (user && token && this.authService.isAuthenticated()) {
-          return AuthApiActions.initSuccess({ user, token });
+        if (userJson && token) {
+          try {
+            const user = JSON.parse(userJson);
+            return AuthApiActions.initSuccess({ user, token });
+          } catch (error) {
+            // Invalid JSON in localStorage, clear it
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('token');
+            return AuthApiActions.initFailure();
+          }
         }
         return AuthApiActions.initFailure();
       })
@@ -37,7 +45,7 @@ export class AuthEffects {
       exhaustMap(action =>
         this.authService.login(action.credentials).pipe(
           map(response => {
-            if (response.success) {
+            if (response.success && response.data.success) {
               return AuthApiActions.loginSuccess({ response });
             } else {
               return AuthApiActions.loginFailure({
@@ -66,8 +74,26 @@ export class AuthEffects {
     )
   );
 
+  // Login Success Effect - Persist to localStorage
+  persistAuthOnLoginSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AuthApiActions.loginSuccess),
+        tap(action => {
+          const { response } = action;
+          if (response.data.user) {
+            localStorage.setItem('currentUser', JSON.stringify(response.data.user));
+          }
+          if (response.data.token) {
+            localStorage.setItem('token', response.data.token);
+          }
+        })
+      ),
+    { dispatch: false }
+  );
+
   // Login Success Effect - Navigate to tasks and show notification
-  loginSuccess$ = createEffect(
+  navigateOnLoginSuccess$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(AuthApiActions.loginSuccess),
@@ -96,14 +122,15 @@ export class AuthEffects {
     )
   );
 
-  // Logout Effect
+  // Logout Effect - Clear localStorage
   logout$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthPageActions.logout),
-      map(() => {
-        this.authService.logout();
-        return AuthApiActions.logoutSuccess();
-      })
+      tap(() => {
+        localStorage.removeItem('currentUser');
+        localStorage.removeItem('token');
+      }),
+      map(() => AuthApiActions.logoutSuccess())
     )
   );
 

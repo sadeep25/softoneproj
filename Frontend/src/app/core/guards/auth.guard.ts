@@ -1,16 +1,26 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
+import { Store } from '@ngrx/store';
+import { map } from 'rxjs/operators';
+import { getIsAuthenticated } from '../store/auth/auth.selectors';
 
+/**
+ * Auth Guard - Uses NgRx store as source of truth
+ * No service dependency, all state from store
+ */
 export const authGuard: CanActivateFn = (route, state) => {
-  const authService = inject(AuthService);
+  const store = inject(Store);
   const router = inject(Router);
 
-  if (authService.isAuthenticated()) {
-    return true;
-  }
+  return store.select(getIsAuthenticated).pipe(
+    map(isAuthenticated => {
+      if (isAuthenticated) {
+        return true;
+      }
 
-  // Redirect to login page if not authenticated
-  router.navigate(['/login']);
-  return false;
+      // Redirect to login page if not authenticated
+      router.navigate(['/login']);
+      return false;
+    })
+  );
 };

@@ -33,8 +33,8 @@ export class TasksContainerComponent implements OnInit {
   taskStats = this.store.selectSignal(fromTask.getTaskStats);
   isLoading = this.store.selectSignal(fromTask.getIsLoading);
   isEmpty = this.store.selectSignal(fromTask.getIsEmpty);
-  filters = this.store.selectSignal(fromTask.getFilters);
   selectedTask = this.store.selectSignal(fromTask.getSelectedTask);
+  filters = this.store.selectSignal(fromTask.getFilters);
 
   // Local component state as signals
   viewMode = signal<'list' | 'board'>('board');
@@ -43,10 +43,6 @@ export class TasksContainerComponent implements OnInit {
   ngOnInit(): void {
     // Dispatch load tasks action
     this.store.dispatch(TaskPageActions.loadTasks());
-  }
-
-  onFiltersChange(filters: TaskFilters): void {
-    this.store.dispatch(TaskPageActions.setFilters({ filters }));
   }
 
   setViewMode(mode: 'list' | 'board'): void {
@@ -99,5 +95,13 @@ export class TasksContainerComponent implements OnInit {
 
   onCancelEdit(): void {
     this.store.dispatch(TaskPageActions.clearCurrentTask());
+  }
+
+  onFiltersChange(filters: Partial<TaskFilters>): void {
+    this.store.dispatch(TaskPageActions.setFilters({ filters }));
+  }
+
+  onClearFilters(): void {
+    this.store.dispatch(TaskPageActions.clearFilters());
   }
 }

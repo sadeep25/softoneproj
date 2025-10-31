@@ -27,7 +27,8 @@
     <div class="header-actions">
       <app-task-filters
         [filters]="filters()"
-        (filtersChange)="onFiltersChange($event)">
+        (filtersChange)="onFiltersChange($event)"
+        (clearFilters)="onClearFilters()">
       </app-task-filters>
 
       <div class="view-toggle">

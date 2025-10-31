@@ -28,7 +28,7 @@
         (change)="onStatusChange($event)"
         (click)="$event.stopPropagation()">
         @for (status of statusOptions; track status.value) {
-          <option [value]="status.value">{{ status.label }}</option>
+          <option [value]="status.value" [selected]="status.value === task().status">{{ status.label }}</option>
         }
       </select>
     </div>
