@@ -1,4 +1,5 @@
-import { Component, input, output, ChangeDetectionStrategy } from '@angular/core';
+import { Component, input, output, ChangeDetectionStrategy, computed } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { Task, TaskStatus } from '../../../../core/models';
 
 @Component({
@@ -6,6 +7,7 @@ import { Task, TaskStatus } from '../../../../core/models';
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.component.scss'],
   standalone: true,
+  imports: [DatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaskListComponent {
@@ -17,11 +19,18 @@ export class TaskListComponent {
   taskUpdate = output<{ id: string; updates: any }>();
   taskDelete = output<string>();
 
-  onTaskSelect(task: Task): void {
-    this.taskSelect.emit(task);
-  }
+  // Computed signal for tasks with additional metadata
+  tasksWithMetadata = computed(() => {
+    return this.tasks().map(task => ({
+      ...task,
+      statusLabel: this.getStatusLabel(task.status),
+      isOverdue: task.dueDate
+        ? new Date(task.dueDate) < new Date() && task.status !== TaskStatus.Done
+        : false
+    }));
+  });
 
-  getStatusLabel(status: TaskStatus): string {
+  private getStatusLabel(status: TaskStatus): string {
     switch (status) {
       case TaskStatus.ToDo:
         return 'To Do';
@@ -36,14 +45,8 @@ export class TaskListComponent {
     }
   }
 
-  isOverdue(task: Task): boolean {
-    if (!task.dueDate) return false;
-    return new Date(task.dueDate) < new Date() && task.status !== TaskStatus.Done;
-  }
-
-  formatDate(date: Date | string): string {
-    const d = new Date(date);
-    return d.toLocaleDateString();
+  onTaskSelect(task: Task): void {
+    this.taskSelect.emit(task);
   }
 
   onEdit(task: Task) {

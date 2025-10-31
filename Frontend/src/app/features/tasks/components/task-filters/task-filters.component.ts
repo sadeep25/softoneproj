@@ -76,26 +76,19 @@ export class TaskFiltersComponent {
     });
   }
 
-  onSearchChange(event: Event) {
-    const target = event.target as HTMLInputElement;
+  onSearchChange(value: string) {
     // Update the signal — effect will handle debouncing
-    this.searchTerm.set(target.value || '');
+    this.searchTerm.set(value || '');
   }
 
-  onStatusChange(event: Event) {
-    const target = event.target as HTMLSelectElement;
-    const value = target.value as TaskStatus;
-
-    // Emit filter change
-    this.emitFilters({ status: value || undefined });
+  onStatusChange(value: string) {
+    // Emit filter change with strongly-typed value
+    this.emitFilters({ status: (value as TaskStatus) || undefined });
   }
 
-  onPriorityChange(event: Event) {
-    const target = event.target as HTMLSelectElement;
-    const value = target.value as TaskPriority;
-
-    // Emit filter change
-    this.emitFilters({ priority: value || undefined });
+  onPriorityChange(value: string) {
+    // Emit filter change with strongly-typed value
+    this.emitFilters({ priority: (value as TaskPriority) || undefined });
   }
 
   onClearFilters(): void {

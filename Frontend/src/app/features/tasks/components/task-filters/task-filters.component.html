@@ -5,16 +5,16 @@
       placeholder="Search tasks..."
       class="search-input"
       [value]="currentSearchTerm()"
-      (input)="onSearchChange($event)"
-      #searchInput>
+      (input)="onSearchChange(searchInputEl.value)"
+      #searchInputEl>
   </div>
 
   <div class="filter-group">
     <select
       class="filter-select"
       [value]="currentStatus()"
-      (change)="onStatusChange($event)"
-      #statusSelect>
+      (change)="onStatusChange(statusSelectEl.value)"
+      #statusSelectEl>
       <option value="">All Status</option>
       @for (status of statusOptions; track status.value) {
         <option [value]="status.value">{{ status.label }}</option>
@@ -26,8 +26,8 @@
     <select
       class="filter-select"
       [value]="currentPriority()"
-      (change)="onPriorityChange($event)"
-      #prioritySelect>
+      (change)="onPriorityChange(prioritySelectEl.value)"
+      #prioritySelectEl>
       <option value="">All Priority</option>
       @for (priority of priorityOptions; track priority.value) {
         <option [value]="priority.value">{{ priority.label }}</option>

@@ -7,13 +7,13 @@
     <div class="header-cell">Actions</div>
   </div>
 
-  @if (!tasks() || tasks().length === 0) {
+  @if (!tasksWithMetadata() || tasksWithMetadata().length === 0) {
     <div class="empty-list">
       <p>No tasks found matching your criteria.</p>
     </div>
   }
 
-  @for (task of tasks(); track task.id) {
+  @for (task of tasksWithMetadata(); track task.id) {
     <div class="task-row" (click)="onTaskSelect(task)">
       <div class="task-cell task-info">
         <h4 class="task-title">{{ task.title }}</h4>
@@ -30,16 +30,16 @@
 
       <div class="task-cell">
         <span class="status-badge" [class]="'status-' + task.status.toLowerCase()">
-          {{ getStatusLabel(task.status) }}
+          {{ task.statusLabel }}
         </span>
       </div>
 
-    
+
 
       <div class="task-cell">
         @if (task.dueDate) {
-          <span [class.overdue]="isOverdue(task)">
-            {{ formatDate(task.dueDate) }}
+          <span [class.overdue]="task.isOverdue">
+            {{ task.dueDate | date }}
           </span>
         } @else {
           <span>-</span>

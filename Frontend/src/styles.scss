@@ -29,6 +29,64 @@ button {
   font-family: inherit;
 }
 
+/* Button Styles */
+.btn {
+  padding: 0.5rem 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+  }
+}
+
+.btn-primary {
+  background: #007bff;
+  border-color: #007bff;
+  color: white;
+
+  &:hover:not(:disabled) {
+    background: #0056b3;
+    border-color: #0056b3;
+  }
+}
+
+.btn-secondary {
+  background: white;
+  border-color: #6c757d;
+  color: #6c757d;
+
+  &:hover:not(:disabled) {
+    background: #6c757d;
+    color: white;
+  }
+}
+
+.btn-danger {
+  background: white;
+  border-color: #dc3545;
+  color: #dc3545;
+
+  &:hover:not(:disabled) {
+    background: #dc3545;
+    color: white;
+  }
+}
+
 /* Utility Classes */
 .text-center {
   text-align: center;

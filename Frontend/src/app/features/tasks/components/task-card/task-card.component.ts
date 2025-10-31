@@ -18,6 +18,10 @@ export class TaskCardComponent {
   // Computed signals for derived values
   priorityClass = computed(() => `priority-${this.task().priority.toLowerCase()}`);
 
+  statusClass = computed(() => `status-${this.task().status.toLowerCase()}`);
+
+  cardClasses = computed(() => `${this.priorityClass()} ${this.statusClass()}`);
+
   priorityBadgeClass = computed(() => `priority-${this.task().priority.toLowerCase()}`);
 
   formattedDueDate = computed(() => {

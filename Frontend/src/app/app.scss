@@ -14,8 +14,7 @@
 }
 
 .header-content {
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 100%;
   padding: 1rem 1.5rem;
   display: flex;
   justify-content: space-between;
@@ -30,6 +29,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  flex: 0 0 auto;
 }
 
 .app-icon {
@@ -40,12 +40,25 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  flex: 0 0 auto;
+  margin-left: auto;
 }
 
 .user-name {
-  color: #6c757d;
+  color: #495057;
   font-weight: 500;
-  font-size: 0.875rem;
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+  background: #f8f9fa;
+  border-radius: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &::before {
+    content: '👤';
+    font-size: 1rem;
+  }
 }
 
 .app-nav {

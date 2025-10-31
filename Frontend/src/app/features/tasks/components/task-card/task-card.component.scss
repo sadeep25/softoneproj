@@ -7,12 +7,14 @@
   cursor: pointer;
   transition: all 0.2s ease;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  position: relative;
 
   &:hover {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     transform: translateY(-1px);
   }
 
+  // Priority-based left border
   &.priority-low {
     border-left: 4px solid #28a745;
   }
@@ -27,6 +29,24 @@
 
   &.priority-critical {
     border-left: 4px solid #dc3545;
+  }
+
+  // Status-based background tint for different states
+  &.status-todo {
+    background: #f8f9fa;
+  }
+
+  &.status-inprogress {
+    background: #e7f3ff;
+  }
+
+  &.status-done {
+    background: #f0f9f4;
+  }
+
+  &.status-cancelled {
+    background: #fff5f5;
+    opacity: 0.9;
   }
 }
 
