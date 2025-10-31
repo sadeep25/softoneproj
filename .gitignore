@@ -10,6 +10,19 @@
 *.cache
 *.log
 
+# .NET specific build artifacts
+*.dll
+*.pdb
+*.exe
+*.pdbx
+*.obj
+*.AssemblyInfo.cs
+*.AssemblyInfoInputs.cache
+*.sourcelink.json
+**/ref/
+**/refint/
+*.dswa.cache.json
+
 # Angular Build outputs
 **/dist/
 **/.angular/

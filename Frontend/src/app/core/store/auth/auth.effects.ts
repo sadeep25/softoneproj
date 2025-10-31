@@ -90,8 +90,7 @@ export class AuthEffects {
       map(action =>
         NotificationActions.showError({
           title: 'Login Failed',
-          message: action.error,
-          persistent: true
+          message: action.error
         })
       )
     )

@@ -71,8 +71,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         store.dispatch(
           NotificationActions.showError({
             title: errorTitle,
-            message: errorMessage,
-            persistent: true
+            message: errorMessage
           })
         );
       }

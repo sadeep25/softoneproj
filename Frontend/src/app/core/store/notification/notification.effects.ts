@@ -33,13 +33,14 @@ export class NotificationEffects {
   showError$ = createEffect(() =>
     this.actions$.pipe(
       ofType(NotificationActions.showError),
-      map(({ title, message, persistent }) =>
+      map(({ title, message, persistent, duration }) =>
         NotificationActions.showNotification({
           notification: {
             type: 'error',
             title,
             message,
-            persistent: persistent ?? true
+            persistent: persistent ?? false,
+            duration: duration ?? 5000
           }
         })
       )
