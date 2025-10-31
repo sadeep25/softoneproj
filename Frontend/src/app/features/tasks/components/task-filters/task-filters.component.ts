@@ -120,7 +120,19 @@ export class TaskFiltersComponent {
   }
 
   private updateFilters(updates: Partial<TaskFilters>): void {
-    const newFilters = { ...this.filters(), ...updates };
+    // Start with current filters from the store
+    const currentFilters = this.filters();
+
+    // Create new filters object by merging updates
+    const newFilters: TaskFilters = { ...currentFilters, ...updates };
+
+    // Remove undefined values - they should clear the filter
+    Object.keys(newFilters).forEach(key => {
+      if (newFilters[key as keyof TaskFilters] === undefined) {
+        delete newFilters[key as keyof TaskFilters];
+      }
+    });
+
     this.filtersChange.emit(newFilters);
   }
 }
