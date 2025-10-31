@@ -25,7 +25,8 @@
       "Bash(npm run build:*)",
       "Bash(dotnet run:*)",
       "Bash(cat:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ],
     "deny": [],
     "ask": []

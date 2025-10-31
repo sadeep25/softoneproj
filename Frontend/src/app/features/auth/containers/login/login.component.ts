@@ -1,8 +1,7 @@
-import { Component, inject, OnDestroy } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { Subject, takeUntil } from 'rxjs';
 import * as AuthPageActions from '../../../../core/store/auth/auth-page.actions';
 import * as AuthSelectors from '../../../../core/store/auth/auth.selectors';
 
@@ -13,29 +12,24 @@ import * as AuthSelectors from '../../../../core/store/auth/auth.selectors';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnDestroy {
+export class LoginComponent {
   private fb = inject(FormBuilder);
   private store = inject(Store);
-  private destroy$ = new Subject<void>();
 
   loginForm: FormGroup;
-  isLoading$ = this.store.select(AuthSelectors.getLoading);
+  // convert store observable to a signal (Angular 16+)
+  isLoading = this.store.selectSignal(AuthSelectors.getLoading);
+
+  isFieldInvalid(fieldName: string): boolean {
+    const field = this.loginForm.get(fieldName);
+    return !!(field && field.invalid && (field.dirty || field.touched));
+  }
 
   constructor() {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
-  isFieldInvalid(fieldName: string): boolean {
-    const field = this.loginForm.get(fieldName);
-    return !!(field && field.invalid && (field.dirty || field.touched));
   }
 
   onSubmit() {
