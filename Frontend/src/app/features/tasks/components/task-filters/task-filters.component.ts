@@ -1,5 +1,7 @@
-import { Component, input, output, computed, ChangeDetectionStrategy } from '@angular/core';
+import { Component, input, output, computed, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Subject, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { TaskStatus, TaskPriority } from '../../../../core/models';
 
 export interface TaskFilters {
@@ -41,6 +43,17 @@ export class TaskFiltersComponent {
     { value: TaskStatus.Cancelled, label: 'Cancelled' }
   ];
 
+  // RxJS subject to debounce search input
+  private search$ = new Subject<string>();
+  private searchSub: Subscription | null = null;
+
+  constructor() {
+    // Subscribe to search subject with debounce and emit filter updates
+    this.searchSub = this.search$
+      .pipe(debounceTime(500), distinctUntilChanged())
+      .subscribe((value) => this.updateFilters({ searchTerm: value || undefined }));
+  }
+
   priorityOptions = [
     { value: TaskPriority.Low, label: 'Low' },
     { value: TaskPriority.Medium, label: 'Medium' },
@@ -50,7 +63,8 @@ export class TaskFiltersComponent {
 
   onSearchChange(event: Event) {
     const target = event.target as HTMLInputElement;
-    this.updateFilters({ searchTerm: target.value || undefined });
+    // Push the raw input value to the subject — subscription will debounce
+    this.search$.next(target.value || '');
   }
 
   onStatusChange(event: Event) {
@@ -72,5 +86,13 @@ export class TaskFiltersComponent {
   private updateFilters(updates: Partial<TaskFilters>): void {
     const newFilters = { ...this.filters(), ...updates };
     this.filtersChange.emit(newFilters);
+  }
+
+  ngOnDestroy(): void {
+    if (this.searchSub) {
+      this.searchSub.unsubscribe();
+      this.searchSub = null;
+    }
+    this.search$.complete();
   }
 }
