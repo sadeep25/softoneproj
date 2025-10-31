@@ -29,7 +29,7 @@ export const showSuccess = createAction(
 
 export const showError = createAction(
   '[Notification] Show Error',
-  props<{ title: string; message?: string; persistent?: boolean }>()
+  props<{ title: string; message?: string; persistent?: boolean; duration?: number }>()
 );
 
 export const showWarning = createAction(
