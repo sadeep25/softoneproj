@@ -23,7 +23,9 @@
       "Bash(robocopy . Backend /MOV TaskManager.slnx)",
       "Bash(npm uninstall:*)",
       "Bash(npm run build:*)",
-      "Bash(dotnet run:*)"
+      "Bash(dotnet run:*)",
+      "Bash(cat:*)",
+      "Bash(git add:*)"
     ],
     "deny": [],
     "ask": []

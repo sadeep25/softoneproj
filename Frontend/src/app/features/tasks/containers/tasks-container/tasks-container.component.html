@@ -56,8 +56,8 @@
 
   <main class="tasks-main">
     <div class="tasks-content">
-      <!-- Show loading spinner only on initial load (when no tasks exist yet) -->
-      @if (isLoading() && tasks().length === 0) {
+      <!-- Show loading spinner in the content area where tasks/board are displayed -->
+      @if (isLoading()) {
         <app-loading-spinner message="Loading tasks..."></app-loading-spinner>
       } @else {
         <!-- Always show content area to prevent flickering -->
@@ -79,7 +79,7 @@
         }
 
         <!-- Empty state when no tasks match filters -->
-        @if (filteredTasks().length === 0 && !isLoading()) {
+        @if (filteredTasks().length === 0) {
           <div class="empty-state">
             <div class="empty-icon">📋</div>
             @if (tasks().length === 0) {
@@ -95,13 +95,6 @@
           </div>
         }
 
-        <!-- Subtle loading indicator during filter refresh -->
-        @if (isLoading() && tasks().length > 0) {
-          <div class="filter-loading-indicator">
-            <div class="spinner-small"></div>
-            <span>Refreshing...</span>
-          </div>
-        }
       }
     </div>
   </main>

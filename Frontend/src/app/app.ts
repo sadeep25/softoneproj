@@ -3,14 +3,12 @@ import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { filter } from 'rxjs/operators';
 import { NotificationComponent } from './shared/components/notification/notification.component';
-import { LoadingSpinnerComponent } from './shared/components/loading-spinner/loading-spinner.component';
-import * as LoadingSelectors from './core/store/loading/loading.selectors';
 import * as AuthSelectors from './core/store/auth/auth.selectors';
 import * as AuthPageActions from './core/store/auth/auth-page.actions';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NotificationComponent, LoadingSpinnerComponent],
+  imports: [RouterOutlet, NotificationComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
@@ -19,7 +17,6 @@ export class App implements OnInit {
   private router = inject(Router);
 
   // Use store signal selectors
-  isLoading = this.store.selectSignal(LoadingSelectors.selectIsLoading);
   isAuthenticated = this.store.selectSignal(AuthSelectors.getIsAuthenticated);
   userName = this.store.selectSignal(AuthSelectors.getUserName);
   isLoginPage = signal(false);
