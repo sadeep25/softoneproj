@@ -33,6 +33,11 @@ export const authReducer = createReducer<AuthState>(
       isAuthenticated: true
     };
   }),
+  on(AuthApiActions.initFailure, (): AuthState => {
+    return {
+      ...initialState
+    };
+  }),
   // Login
   on(AuthPageActions.login, (state): AuthState => {
     return {

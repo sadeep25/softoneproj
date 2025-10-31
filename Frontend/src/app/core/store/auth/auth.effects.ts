@@ -25,7 +25,7 @@ export class AuthEffects {
         if (user && token && this.authService.isAuthenticated()) {
           return AuthApiActions.initSuccess({ user, token });
         }
-        return AuthApiActions.logoutSuccess();
+        return AuthApiActions.initFailure();
       })
     )
   );
@@ -122,5 +122,17 @@ export class AuthEffects {
           })
         )
       )
+  );
+
+  // Init Failure Effect - Navigate to login without notification
+  initFailure$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AuthApiActions.initFailure),
+        tap(() => {
+          this.router.navigate(['/login']);
+        })
+      ),
+    { dispatch: false }
   );
 }

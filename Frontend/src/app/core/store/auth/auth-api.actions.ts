@@ -20,3 +20,7 @@ export const loginFailure = createAction(
 export const logoutSuccess = createAction(
   '[Auth API] Logout Success'
 );
+
+export const initFailure = createAction(
+  '[Auth API] Init Failure'
+);
