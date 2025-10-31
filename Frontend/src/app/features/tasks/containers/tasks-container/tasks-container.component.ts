@@ -1,127 +1,18 @@
-import { Component, inject, OnInit, signal, computed } from '@angular/core';
-import { TaskStore } from '../../../../core/stores/task.store';
-import { Task, TaskStatus } from '../../../../core/models';
+import { Component, OnInit, signal, inject } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Task, TaskStatus, CreateTaskDto, UpdateTaskDto } from '../../../../core/models';
 import { LoadingSpinnerComponent } from '../../../../shared/components/loading-spinner/loading-spinner.component';
 import { ErrorMessageComponent } from '../../../../shared/components/error-message/error-message.component';
 import { TaskBoardComponent } from '../../components/task-board/task-board.component';
 import { TaskListComponent } from '../../components/task-list/task-list.component';
-import { TaskFiltersComponent } from '../../components/task-filters/task-filters.component';
+import { TaskFiltersComponent, TaskFilters } from '../../components/task-filters/task-filters.component';
 import { TaskFormComponent } from '../../components/task-form/task-form.component';
+import * as TaskPageActions from '../../../../core/store/task/task-page.actions';
+import * as fromTask from '../../../../core/store/task';
 
 @Component({
   selector: 'app-tasks-container',
-  template: `
-    <div class="tasks-container">
-      <header class="tasks-header">
-        <div class="header-content">
-          <h1>Task Management</h1>
-          <div class="task-stats">
-            <div class="stat">
-              <span class="stat-value">{{ taskStats().total }}</span>
-              <span class="stat-label">Total</span>
-            </div>
-            <div class="stat">
-              <span class="stat-value">{{ taskStats().inProgress }}</span>
-              <span class="stat-label">In Progress</span>
-            </div>
-            <div class="stat">
-              <span class="stat-value">{{ taskStats().completed }}</span>
-              <span class="stat-label">Completed</span>
-            </div>
-            @if (taskStats().overdue > 0) {
-              <div class="stat stat-warning">
-                <span class="stat-value">{{ taskStats().overdue }}</span>
-                <span class="stat-label">Overdue</span>
-              </div>
-            }
-          </div>
-        </div>
-        
-        <div class="header-actions">
-          <app-task-filters
-            [filters]="taskStore.filters()"
-            (filtersChange)="onFiltersChange($event)">
-          </app-task-filters>
-          
-          <div class="view-toggle">
-            <button 
-              class="btn"
-              [class.active]="viewMode() === 'list'"
-              (click)="viewMode.set('list')">
-              📋 List
-            </button>
-            <button 
-              class="btn"
-              [class.active]="viewMode() === 'board'"
-              (click)="viewMode.set('board')">
-              📊 Board
-            </button>
-          </div>
-          
-          <button 
-            class="btn btn-primary"
-            (click)="onCreateTask()"
-            [disabled]="taskStore.isLoading()">
-            ➕ Create Task
-          </button>
-        </div>
-      </header>
-
-      <main class="tasks-main">
-        @if (isLoading()) {
-          <app-loading-spinner message="Loading tasks..."></app-loading-spinner>
-        }
-
-        @if (hasError()) {
-          <app-error-message 
-            [message]="taskStore.error()!"
-            [showRetry]="true"
-            (retry)="onRetry()">
-          </app-error-message>
-        }
-
-        @if (!isLoading() && !hasError()) {
-          <div class="tasks-content">
-            @if (viewMode() === 'list') {
-              <app-task-list
-                [tasks]="filteredTasks()"
-                (taskSelect)="onTaskSelect($event)"
-                (taskUpdate)="onTaskUpdate($event)"
-                (taskDelete)="onTaskDelete($event)">
-              </app-task-list>
-            }
-
-            @if (viewMode() === 'board') {
-              <app-task-board
-                [tasksByStatus]="taskStore.tasksByStatus()"
-                (taskMove)="onTaskMove($event)"
-                (taskSelect)="onTaskSelect($event)">
-              </app-task-board>
-            }
-
-            @if (taskStore.isEmpty() && !isLoading()) {
-              <div class="empty-state">
-                <div class="empty-icon">📋</div>
-                <h3>No tasks yet</h3>
-                <p>Create your first task to get started with task management.</p>
-                <button class="btn btn-primary" (click)="onCreateTask()">
-                  Create Your First Task
-                </button>
-              </div>
-            }
-          </div>
-        }
-      </main>
-
-      @if (showCreateForm()) {
-        <app-task-form
-          mode="create"
-          (save)="onSaveTask($event)"
-          (cancel)="onCancelCreate()">
-        </app-task-form>
-      }
-    </div>
-  `,
+  templateUrl: './tasks-container.component.html',
   styleUrls: ['./tasks-container.component.scss'],
   standalone: true,
   imports: [
@@ -134,78 +25,75 @@ import { TaskFormComponent } from '../../components/task-form/task-form.componen
   ]
 })
 export class TasksContainerComponent implements OnInit {
-  // Injected services
-  taskStore = inject(TaskStore);
-  
-  // Component state signals
+  // Inject store
+  private readonly store = inject(Store);
+
+  // Signals from store using selectSignal
+  tasks = this.store.selectSignal(fromTask.getTasks);
+  filteredTasks = this.store.selectSignal(fromTask.getFilteredTasks);
+  tasksByStatus = this.store.selectSignal(fromTask.getTasksByStatus);
+  taskStats = this.store.selectSignal(fromTask.getTaskStats);
+  isLoading = this.store.selectSignal(fromTask.getIsLoading);
+  hasError = this.store.selectSignal(fromTask.getHasError);
+  error = this.store.selectSignal(fromTask.getError);
+  isEmpty = this.store.selectSignal(fromTask.getIsEmpty);
+  filters = this.store.selectSignal(fromTask.getFilters);
+
+  // Local component state as signals
   viewMode = signal<'list' | 'board'>('board');
   showCreateForm = signal(false);
 
-  // Computed signals for better performance
-  isLoading = computed(() => this.taskStore.isLoading());
-  hasError = computed(() => this.taskStore.hasError());
-  errorMessage = computed(() => this.taskStore.error());
-  taskStats = computed(() => this.taskStore.taskStats());
-  filteredTasks = computed(() => this.taskStore.filteredTasks());
-  tasksByStatus = computed(() => this.taskStore.tasksByStatus());
-  filters = computed(() => this.taskStore.filters());
-  isEmpty = computed(() => this.taskStore.isEmpty());
-
-  ngOnInit() {
-    this.taskStore.loadTasks().subscribe({
-      next: () => {},
-      error: () => {
-        // store handles notification; nothing else to do here
-      }
-    });
+  ngOnInit(): void {
+    // Dispatch load tasks action
+    this.store.dispatch(TaskPageActions.loadTasks());
   }
 
-  onFiltersChange(filters: any) {
-    this.taskStore.setFilters(filters);
+  onFiltersChange(filters: TaskFilters): void {
+    this.store.dispatch(TaskPageActions.setFilters({ filters }));
   }
 
-  onCreateTask() {
+  setViewMode(mode: 'list' | 'board'): void {
+    this.viewMode.set(mode);
+  }
+
+  onCreateTask(): void {
     this.showCreateForm.set(true);
   }
 
-  onTaskSelect(task: Task) {
-    this.taskStore.selectTask(task);
+  onTaskSelect(task: Task): void {
+    this.store.dispatch(TaskPageActions.selectTask({ task }));
   }
 
-  onTaskUpdate(update: { id: string; updates: any }) {
-    this.taskStore.updateTask(update.id, update.updates).subscribe({
-      next: () => {},
-      error: () => {}
-    });
+  onTaskUpdate(update: { id: string; updates: UpdateTaskDto }): void {
+    this.store.dispatch(TaskPageActions.updateTask({ id: update.id, updates: update.updates }));
   }
 
-  onTaskDelete(taskId: string) {
+  onTaskDelete(taskId: string): void {
     if (confirm('Are you sure you want to delete this task?')) {
-      this.taskStore.deleteTask(taskId).subscribe({ next: () => {}, error: () => {} });
+      this.store.dispatch(TaskPageActions.deleteTask({ id: taskId }));
     }
   }
 
-  onTaskMove(event: { taskId: string; newStatus: TaskStatus }) {
-    this.taskStore.updateTask(event.taskId, { status: event.newStatus }).subscribe({ next: () => {}, error: () => {} });
+  onTaskMove(event: { taskId: string; newStatus: TaskStatus }): void {
+    this.store.dispatch(
+      TaskPageActions.updateTask({
+        id: event.taskId,
+        updates: { status: event.newStatus }
+      })
+    );
   }
 
-  onSaveTask(taskData: any) {
-    this.taskStore.createTask(taskData).subscribe({
-      next: () => {
-        this.showCreateForm.set(false);
-      },
-      error: () => {
-        // Error handled by store
-      }
-    });
-  }
-
-  onCancelCreate() {
+  onSaveTask(taskData: CreateTaskDto | UpdateTaskDto): void {
+    this.store.dispatch(TaskPageActions.createTask({ task: taskData as CreateTaskDto }));
     this.showCreateForm.set(false);
   }
 
-  onRetry() {
-    this.taskStore.clearError();
-    this.taskStore.loadTasks();
+  onCancelCreate(): void {
+    this.showCreateForm.set(false);
+  }
+
+  onRetry(): void {
+    this.store.dispatch(TaskPageActions.clearError());
+    this.store.dispatch(TaskPageActions.loadTasks());
   }
 }

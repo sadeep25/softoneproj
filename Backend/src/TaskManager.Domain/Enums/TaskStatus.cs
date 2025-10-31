@@ -2,9 +2,8 @@ namespace TaskManager.Domain.Enums;
 
 public enum TaskStatus
 {
-    NotStarted = 0,
+    ToDo = 0,
     InProgress = 1,
-    Completed = 2,
-    OnHold = 3,
-    Cancelled = 4
+    Done = 2,
+    Cancelled = 3
 }

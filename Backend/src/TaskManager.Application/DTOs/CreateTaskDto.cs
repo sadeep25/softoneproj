@@ -8,5 +8,6 @@ public record CreateTaskDto
     public string? Description { get; init; }
     public Priority Priority { get; init; } = Priority.Medium;
     public DateTime? DueDate { get; init; }
+    public string? AssignedTo { get; init; }
     public string? Tags { get; init; }
 }

@@ -1,8 +1,8 @@
-import { Component, input, output, computed } from '@angular/core';
+import { Component, input, output, computed, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TaskStatus, TaskPriority } from '../../../../core/models';
 
-interface TaskFilters {
+export interface TaskFilters {
   status?: TaskStatus;
   priority?: TaskPriority;
   assignedTo?: string;
@@ -11,61 +11,11 @@ interface TaskFilters {
 
 @Component({
   selector: 'app-task-filters',
-  template: `
-    <div class="task-filters">
-      <div class="filter-group">
-        <input 
-          type="text"
-          placeholder="Search tasks..."
-          class="search-input"
-          [value]="currentSearchTerm()"
-          (input)="onSearchChange($event)">
-      </div>
-      
-      <div class="filter-group">
-        <select 
-          class="filter-select"
-          [value]="currentStatus()"
-          (change)="onStatusChange($event)">
-          <option value="">All Status</option>
-          @for (status of statusOptions; track status.value) {
-            <option [value]="status.value">{{ status.label }}</option>
-          }
-        </select>
-      </div>
-      
-      <div class="filter-group">
-        <select 
-          class="filter-select"
-          [value]="currentPriority()"
-          (change)="onPriorityChange($event)">
-          <option value="">All Priority</option>
-          @for (priority of priorityOptions; track priority.value) {
-            <option [value]="priority.value">{{ priority.label }}</option>
-          }
-        </select>
-      </div>
-      
-      <div class="filter-group">
-        <input 
-          type="text"
-          placeholder="Assignee..."
-          class="filter-input"
-          [value]="currentAssignee()"
-          (input)="onAssigneeChange($event)">
-      </div>
-      
-      <button 
-        class="clear-filters-btn"
-        (click)="onClearFilters()"
-        [disabled]="!hasActiveFilters()">
-        Clear
-      </button>
-    </div>
-  `,
+  templateUrl: './task-filters.component.html',
   styleUrls: ['./task-filters.component.scss'],
   standalone: true,
-  imports: [FormsModule]
+  imports: [FormsModule],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaskFiltersComponent {
   // Signal-based inputs and outputs
@@ -74,9 +24,17 @@ export class TaskFiltersComponent {
 
   // Computed signals for current filter values
   currentSearchTerm = computed(() => this.filters().searchTerm || '');
+
   currentStatus = computed(() => this.filters().status || '');
+
   currentPriority = computed(() => this.filters().priority || '');
+
   currentAssignee = computed(() => this.filters().assignedTo || '');
+
+  hasActiveFilters = computed(() => {
+    const currentFilters = this.filters();
+    return Object.values(currentFilters).some(value => value !== undefined && value !== '');
+  });
 
   statusOptions = [
     { value: TaskStatus.ToDo, label: 'To Do' },
@@ -112,16 +70,11 @@ export class TaskFiltersComponent {
     this.updateFilters({ assignedTo: target.value || undefined });
   }
 
-  onClearFilters() {
+  onClearFilters(): void {
     this.filtersChange.emit({});
   }
 
-  hasActiveFilters(): boolean {
-    const currentFilters = this.filters();
-    return Object.values(currentFilters).some(value => value !== undefined && value !== '');
-  }
-
-  private updateFilters(updates: Partial<TaskFilters>) {
+  private updateFilters(updates: Partial<TaskFilters>): void {
     const newFilters = { ...this.filters(), ...updates };
     this.filtersChange.emit(newFilters);
   }

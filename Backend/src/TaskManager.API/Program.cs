@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using TaskManager.Application;
 using TaskManager.Infrastructure;
 using TaskManager.API.Middleware;
@@ -5,7 +6,12 @@ using TaskManager.API.Middleware;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+        options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+    });
 
 // Add Application and Infrastructure services
 builder.Services.AddApplicationServices();

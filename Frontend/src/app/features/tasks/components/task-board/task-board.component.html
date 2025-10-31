@@ -1,0 +1,29 @@
+<div class="task-board">
+  <div class="board-columns">
+    @for (column of columns; track column.status) {
+      <div class="board-column" [attr.data-status]="column.status">
+        <header class="column-header">
+          <h3>{{ column.title }}</h3>
+          <span class="task-count">{{ getTasksForStatus(column.status).length }}</span>
+        </header>
+
+        <div class="task-list">
+          @for (task of getTasksForStatus(column.status); track task.id) {
+            <app-task-card
+              [task]="task"
+              (click)="onTaskSelect(task)"
+              (statusChange)="onStatusChange(task.id, $event)"
+              class="task-item">
+            </app-task-card>
+          }
+
+          @if (getTasksForStatus(column.status).length === 0) {
+            <div class="empty-column">
+              <p>No {{ column.title.toLowerCase() }} tasks</p>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</div>

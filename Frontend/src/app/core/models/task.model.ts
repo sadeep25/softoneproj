@@ -4,11 +4,15 @@ export interface Task {
   description?: string;
   status: TaskStatus;
   priority: TaskPriority;
-  assignedTo?: string;
-  createdAt: Date;
-  updatedAt: Date;
   dueDate?: Date;
-  projectId?: string;
+  assignedTo?: string;
+  isCompleted: boolean;
+  completedAt?: Date;
+  tags?: string;
+  createdAt: Date;
+  updatedAt?: Date;
+  createdBy?: string;
+  updatedBy?: string;
 }
 
 export enum TaskStatus {
@@ -29,9 +33,9 @@ export interface CreateTaskDto {
   title: string;
   description?: string;
   priority: TaskPriority;
-  assignedTo?: string;
   dueDate?: Date;
-  projectId?: string;
+  assignedTo?: string;
+  tags?: string;
 }
 
 export interface UpdateTaskDto {
@@ -39,6 +43,7 @@ export interface UpdateTaskDto {
   description?: string;
   status?: TaskStatus;
   priority?: TaskPriority;
-  assignedTo?: string;
   dueDate?: Date;
+  assignedTo?: string;
+  tags?: string;
 }

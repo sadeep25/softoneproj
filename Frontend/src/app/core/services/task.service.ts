@@ -16,11 +16,12 @@ export class TaskService {
     pageNumber?: number;
     pageSize?: number;
     status?: string;
+    priority?: string;
     assignedTo?: string;
     searchTerm?: string;
   }): Observable<ApiResponse<Task[]>> {
     let httpParams = new HttpParams();
-    
+
     if (params) {
       Object.entries(params).forEach(([key, value]) => {
         if (value !== undefined && value !== null) {
@@ -46,6 +47,10 @@ export class TaskService {
 
   deleteTask(id: string): Observable<ApiResponse<void>> {
     return this.http.delete<ApiResponse<void>>(`${this.apiUrl}/${id}`);
+  }
+
+  completeTask(id: string): Observable<ApiResponse<Task>> {
+    return this.http.post<ApiResponse<Task>>(`${this.apiUrl}/${id}/complete`, {});
   }
 
   // Stream methods for real-time updates

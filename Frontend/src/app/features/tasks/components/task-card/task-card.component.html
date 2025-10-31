@@ -1,0 +1,39 @@
+<div class="task-card" [class]="priorityClass()">
+  <div class="task-header">
+    <h4 class="task-title">{{ task().title }}</h4>
+    <div class="task-priority">
+      <span class="priority-badge" [class]="priorityBadgeClass()">
+        {{ task().priority }}
+      </span>
+    </div>
+  </div>
+
+  @if (task().description) {
+    <p class="task-description">{{ task().description }}</p>
+  }
+
+  <div class="task-footer">
+    <div class="task-meta">
+      @if (task().assignedTo) {
+        <span class="assignee">👤 {{ task().assignedTo }}</span>
+      }
+      @if (task().dueDate) {
+        <span class="due-date" [class.overdue]="isOverdue()">
+          📅 {{ formattedDueDate() }}
+        </span>
+      }
+    </div>
+
+    <div class="task-actions">
+      <select
+        class="status-select"
+        [value]="task().status"
+        (change)="onStatusChange($event)"
+        (click)="$event.stopPropagation()">
+        @for (status of statusOptions; track status.value) {
+          <option [value]="status.value">{{ status.label }}</option>
+        }
+      </select>
+    </div>
+  </div>
+</div>

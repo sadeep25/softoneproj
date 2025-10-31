@@ -1,0 +1,110 @@
+<div class="tasks-container">
+  <header class="tasks-header">
+    <div class="header-content">
+      <h1>Task Management</h1>
+      <div class="task-stats">
+        <div class="stat">
+          <span class="stat-value">{{ taskStats().total }}</span>
+          <span class="stat-label">Total</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">{{ taskStats().inProgress }}</span>
+          <span class="stat-label">In Progress</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">{{ taskStats().completed }}</span>
+          <span class="stat-label">Completed</span>
+        </div>
+        @if (taskStats().overdue > 0) {
+          <div class="stat stat-warning">
+            <span class="stat-value">{{ taskStats().overdue }}</span>
+            <span class="stat-label">Overdue</span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <app-task-filters
+        [filters]="filters()"
+        (filtersChange)="onFiltersChange($event)">
+      </app-task-filters>
+
+      <div class="view-toggle">
+        <button
+          class="btn"
+          [class.active]="viewMode() === 'list'"
+          (click)="setViewMode('list')">
+          📋 List
+        </button>
+        <button
+          class="btn"
+          [class.active]="viewMode() === 'board'"
+          (click)="setViewMode('board')">
+          📊 Board
+        </button>
+      </div>
+
+      <button
+        class="btn btn-primary"
+        (click)="onCreateTask()"
+        [disabled]="isLoading()">
+        ➕ Create Task
+      </button>
+    </div>
+  </header>
+
+  <main class="tasks-main">
+    @if (isLoading()) {
+      <app-loading-spinner message="Loading tasks..."></app-loading-spinner>
+    }
+
+    @if (hasError()) {
+      <app-error-message
+        [message]="error()!"
+        [showRetry]="true"
+        (retry)="onRetry()">
+      </app-error-message>
+    }
+
+    @if (!isLoading() && !hasError()) {
+      <div class="tasks-content">
+        @if (viewMode() === 'list') {
+          <app-task-list
+            [tasks]="filteredTasks()"
+            (taskSelect)="onTaskSelect($event)"
+            (taskUpdate)="onTaskUpdate($event)"
+            (taskDelete)="onTaskDelete($event)">
+          </app-task-list>
+        }
+
+        @if (viewMode() === 'board') {
+          <app-task-board
+            [tasksByStatus]="tasksByStatus()"
+            (taskMove)="onTaskMove($event)"
+            (taskSelect)="onTaskSelect($event)">
+          </app-task-board>
+        }
+
+        @if (isEmpty() && !isLoading()) {
+          <div class="empty-state">
+            <div class="empty-icon">📋</div>
+            <h3>No tasks yet</h3>
+            <p>Create your first task to get started with task management.</p>
+            <button class="btn btn-primary" (click)="onCreateTask()">
+              Create Your First Task
+            </button>
+          </div>
+        }
+      </div>
+    }
+  </main>
+
+  @if (showCreateForm()) {
+    <app-task-form
+      mode="create"
+      (save)="onSaveTask($event)"
+      (cancel)="onCancelCreate()">
+    </app-task-form>
+  }
+</div>

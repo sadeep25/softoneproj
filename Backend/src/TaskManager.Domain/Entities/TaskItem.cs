@@ -8,7 +8,7 @@ public class TaskItem : BaseEntity, IAuditableEntity
 {
     public string Title { get; set; } = string.Empty;
     public string? Description { get; set; }
-    public TaskStatus Status { get; set; } = TaskStatus.NotStarted;
+    public TaskStatus Status { get; set; } = TaskStatus.ToDo;
     public Priority Priority { get; set; } = Priority.Medium;
     public DateTime? DueDate { get; set; }
     public bool IsCompleted { get; set; }
@@ -20,7 +20,7 @@ public class TaskItem : BaseEntity, IAuditableEntity
     public void MarkAsCompleted()
     {
         IsCompleted = true;
-        Status = TaskStatus.Completed;
+        Status = TaskStatus.Done;
         CompletedAt = DateTime.UtcNow;
     }
 

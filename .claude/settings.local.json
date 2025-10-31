@@ -20,7 +20,10 @@
       "Bash(ng version:*)",
       "Bash(ng new:*)",
       "Bash(robocopy src Backend/src /E /MOVE)",
-      "Bash(robocopy . Backend /MOV TaskManager.slnx)"
+      "Bash(robocopy . Backend /MOV TaskManager.slnx)",
+      "Bash(npm uninstall:*)",
+      "Bash(npm run build:*)",
+      "Bash(dotnet run:*)"
     ],
     "deny": [],
     "ask": []

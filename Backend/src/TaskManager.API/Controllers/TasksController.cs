@@ -1,5 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using TaskManager.Application.Common;
 using TaskManager.Application.DTOs;
 using TaskManager.Application.Features.Tasks.Commands.CompleteTask;
 using TaskManager.Application.Features.Tasks.Commands.CreateTask;
@@ -22,75 +23,88 @@ public class TasksController : ControllerBase
     }
 
     /// <summary>
-    /// Gets all tasks
+    /// Gets all tasks with optional filtering
     /// </summary>
     [HttpGet]
-    [ProducesResponseType(typeof(IEnumerable<TaskDto>), StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<TaskDto>>> GetAllTasks()
+    [ProducesResponseType(typeof(ApiResponse<IEnumerable<TaskDto>>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<ApiResponse<IEnumerable<TaskDto>>>> GetAllTasks(
+        [FromQuery] TaskManager.Domain.Enums.TaskStatus? status,
+        [FromQuery] TaskManager.Domain.Enums.Priority? priority,
+        [FromQuery] string? assignedTo,
+        [FromQuery] string? searchTerm)
     {
-        var tasks = await _mediator.Send(new GetAllTasksQuery());
-        return Ok(tasks);
+        var query = new GetAllTasksQuery
+        {
+            Status = status,
+            Priority = priority,
+            AssignedTo = assignedTo,
+            SearchTerm = searchTerm
+        };
+
+        var tasks = await _mediator.Send(query);
+        return Ok(ApiResponse<IEnumerable<TaskDto>>.SuccessResponse(tasks, "Tasks retrieved successfully"));
     }
 
     /// <summary>
     /// Gets a specific task by id
     /// </summary>
     [HttpGet("{id:guid}")]
-    [ProducesResponseType(typeof(TaskDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<TaskDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<TaskDto>> GetTaskById(Guid id)
+    public async Task<ActionResult<ApiResponse<TaskDto>>> GetTaskById(Guid id)
     {
         var task = await _mediator.Send(new GetTaskByIdQuery { Id = id });
-        return Ok(task);
+        return Ok(ApiResponse<TaskDto>.SuccessResponse(task, "Task retrieved successfully"));
     }
 
     /// <summary>
     /// Creates a new task
     /// </summary>
     [HttpPost]
-    [ProducesResponseType(typeof(TaskDto), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ApiResponse<TaskDto>), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<TaskDto>> CreateTask([FromBody] CreateTaskCommand command)
+    public async Task<ActionResult<ApiResponse<TaskDto>>> CreateTask([FromBody] CreateTaskCommand command)
     {
         var task = await _mediator.Send(command);
-        return CreatedAtAction(nameof(GetTaskById), new { id = task.Id }, task);
+        var response = ApiResponse<TaskDto>.SuccessResponse(task, "Task created successfully");
+        return CreatedAtAction(nameof(GetTaskById), new { id = task.Id }, response);
     }
 
     /// <summary>
     /// Updates an existing task
     /// </summary>
     [HttpPut("{id:guid}")]
-    [ProducesResponseType(typeof(TaskDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<TaskDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<TaskDto>> UpdateTask(Guid id, [FromBody] UpdateTaskCommand command)
+    public async Task<ActionResult<ApiResponse<TaskDto>>> UpdateTask(Guid id, [FromBody] UpdateTaskCommand command)
     {
         command.Id = id;
         var task = await _mediator.Send(command);
-        return Ok(task);
+        return Ok(ApiResponse<TaskDto>.SuccessResponse(task, "Task updated successfully"));
     }
 
     /// <summary>
     /// Deletes a task
     /// </summary>
     [HttpDelete("{id:guid}")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult> DeleteTask(Guid id)
+    public async Task<ActionResult<ApiResponse<object>>> DeleteTask(Guid id)
     {
         await _mediator.Send(new DeleteTaskCommand { Id = id });
-        return NoContent();
+        return Ok(ApiResponse<object>.SuccessResponse(new { }, "Task deleted successfully"));
     }
 
     /// <summary>
     /// Marks a task as completed
     /// </summary>
     [HttpPost("{id:guid}/complete")]
-    [ProducesResponseType(typeof(TaskDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<TaskDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<TaskDto>> CompleteTask(Guid id)
+    public async Task<ActionResult<ApiResponse<TaskDto>>> CompleteTask(Guid id)
     {
         var task = await _mediator.Send(new CompleteTaskCommand { Id = id });
-        return Ok(task);
+        return Ok(ApiResponse<TaskDto>.SuccessResponse(task, "Task marked as completed"));
     }
 }

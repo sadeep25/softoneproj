@@ -19,8 +19,7 @@ public class MappingProfile : Profile
 
         // CreateTaskCommand to TaskItem
         CreateMap<CreateTaskCommand, TaskItem>()
-            .ForMember(dest => dest.Priority, opt => opt.MapFrom(src => (Priority)src.Priority))
-            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => Domain.Enums.TaskStatus.NotStarted))
+            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => Domain.Enums.TaskStatus.ToDo))
             .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
             .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore());

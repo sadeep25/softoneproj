@@ -1,0 +1,50 @@
+<div class="task-filters">
+  <div class="filter-group">
+    <input
+      type="text"
+      placeholder="Search tasks..."
+      class="search-input"
+      [value]="currentSearchTerm()"
+      (input)="onSearchChange($event)">
+  </div>
+
+  <div class="filter-group">
+    <select
+      class="filter-select"
+      [value]="currentStatus()"
+      (change)="onStatusChange($event)">
+      <option value="">All Status</option>
+      @for (status of statusOptions; track status.value) {
+        <option [value]="status.value">{{ status.label }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="filter-group">
+    <select
+      class="filter-select"
+      [value]="currentPriority()"
+      (change)="onPriorityChange($event)">
+      <option value="">All Priority</option>
+      @for (priority of priorityOptions; track priority.value) {
+        <option [value]="priority.value">{{ priority.label }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="filter-group">
+    <input
+      type="text"
+      placeholder="Assignee..."
+      class="filter-input"
+      [value]="currentAssignee()"
+      (input)="onAssigneeChange($event)">
+  </div>
+
+  <button
+    class="clear-filters-btn"
+    (click)="onClearFilters()"
+    [disabled]="!hasActiveFilters()">
+    Clear
+  </button>
+</div>

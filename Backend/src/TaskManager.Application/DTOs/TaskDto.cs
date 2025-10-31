@@ -11,6 +11,7 @@ public record TaskDto
     public TaskStatus Status { get; init; }
     public Priority Priority { get; init; }
     public DateTime? DueDate { get; init; }
+    public string? AssignedTo { get; init; }
     public bool IsCompleted { get; init; }
     public DateTime? CompletedAt { get; init; }
     public string? Tags { get; init; }

@@ -17,7 +17,7 @@ namespace TaskManager.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.10")
+                .HasAnnotation("ProductVersion", "10.0.0-rc.2.25502.107")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -27,6 +27,9 @@ namespace TaskManager.Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AssignedTo")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("CompletedAt")
                         .HasColumnType("datetime2");

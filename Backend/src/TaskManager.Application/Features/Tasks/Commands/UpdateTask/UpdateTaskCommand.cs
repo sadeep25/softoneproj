@@ -13,5 +13,6 @@ public class UpdateTaskCommand : IRequest<TaskDto>
     public TaskStatus? Status { get; set; }
     public Priority? Priority { get; set; }
     public DateTime? DueDate { get; set; }
+    public string? AssignedTo { get; set; }
     public string? Tags { get; set; }
 }
