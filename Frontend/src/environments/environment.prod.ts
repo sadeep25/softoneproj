@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://api.taskmanager.com',
+  apiUrl: '',  // Empty string uses relative URLs, proxied by nginx to backend
   features: {
     enableAnalytics: true,
     enableErrorReporting: true,

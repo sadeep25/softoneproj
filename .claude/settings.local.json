@@ -29,7 +29,17 @@
       "Bash(git commit:*)",
       "Bash(npm start)",
       "Bash(sc query:*)",
-      "Bash(findstr:*)"
+      "Bash(findstr:*)",
+      "Bash(docker-compose up:*)",
+      "Bash(docker-compose logs:*)",
+      "Bash(timeout 10 docker-compose:*)",
+      "Bash(docker-compose down:*)",
+      "Bash(timeout 30 docker-compose logs:*)",
+      "Bash(docker-compose ps:*)",
+      "Bash(curl:*)",
+      "Bash(docker-compose exec frontend cat:*)",
+      "Bash(docker exec:*)",
+      "Bash(winpty docker exec:*)"
     ],
     "deny": [],
     "ask": []

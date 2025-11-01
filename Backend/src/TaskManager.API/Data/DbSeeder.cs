@@ -15,13 +15,17 @@ public static class DbSeeder
 
         try
         {
-            // Ensure database is created
-            await context.Database.EnsureCreatedAsync();
-
-            // Apply pending migrations
+            // Apply migrations if any are pending
             if ((await context.Database.GetPendingMigrationsAsync()).Any())
             {
+                Console.WriteLine("Applying pending migrations...");
                 await context.Database.MigrateAsync();
+                Console.WriteLine("Migrations applied successfully!");
+            }
+            else
+            {
+                // Ensure database exists (will not create if it already exists)
+                await context.Database.EnsureCreatedAsync();
             }
 
             // Seed users if none exist

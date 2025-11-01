@@ -1,5 +1,5 @@
-# Use the official .NET SDK image for building
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+# Use the official .NET SDK image for building (.NET 10 preview)
+FROM mcr.microsoft.com/dotnet/nightly/sdk:10.0-preview AS build
 WORKDIR /src
 
 # Copy solution file
@@ -29,8 +29,8 @@ RUN dotnet publish "TaskManager.API.csproj" -c Release -o /app/publish /p:UseApp
 RUN dotnet tool install --global dotnet-ef
 ENV PATH="${PATH}:/root/.dotnet/tools"
 
-# Use the official ASP.NET runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
+# Use the official ASP.NET runtime image (.NET 10 preview)
+FROM mcr.microsoft.com/dotnet/nightly/aspnet:10.0-preview AS final
 WORKDIR /app
 
 # Install SQL Server tools for healthcheck
@@ -46,7 +46,7 @@ RUN apt-get update && apt-get install -y curl apt-transport-https gnupg \
 COPY --from=publish /app/publish .
 
 # Copy migration files and EF tools
-COPY --from=build /root/.dotnet/tools /root/.dotnet/tools
+COPY --from=publish /root/.dotnet/tools /root/.dotnet/tools
 COPY --from=build /src /src
 ENV PATH="${PATH}:/root/.dotnet/tools"
 

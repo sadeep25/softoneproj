@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:5013',
+  apiUrl: '',  // Empty string uses relative URLs, proxied by nginx to backend
   features: {
     enableAnalytics: false,
     enableErrorReporting: true,
