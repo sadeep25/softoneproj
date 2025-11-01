@@ -1,4 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 
@@ -40,16 +41,20 @@ public class JwtAuthenticationMiddleware
                     // Log successful authentication
                     var userId = validationResult.UserId;
                     var username = validationResult.Username;
+                    var email = validationResult.Email;
+                    var name = validationResult.Name;
 
                     _logger.LogInformation(
-                        "JWT token validated successfully for user: {Username} (ID: {UserId})",
-                        username, userId);
+                        "JWT token validated successfully - User: {Username}, Name: {Name}, Email: {Email}, ID: {UserId}",
+                        username ?? "N/A", name ?? "N/A", email ?? "N/A", userId ?? "N/A");
 
                     // Add custom headers for debugging (optional, remove in production)
                     if (context.Request.Headers.ContainsKey("X-Debug"))
                     {
                         context.Response.Headers.Append("X-Authenticated-User", username ?? "Unknown");
                         context.Response.Headers.Append("X-User-Id", userId ?? "Unknown");
+                        context.Response.Headers.Append("X-User-Email", email ?? "Unknown");
+                        context.Response.Headers.Append("X-User-Name", name ?? "Unknown");
                     }
                 }
                 else
@@ -135,21 +140,23 @@ public class JwtAuthenticationMiddleware
             var principal = tokenHandler.ValidateToken(token, validationParameters, out var validatedToken);
 
             // Extract user information from claims
-            var userId = principal.FindFirst(JwtRegisteredClaimNames.Sub)?.Value
-                        ?? principal.FindFirst("userId")?.Value;
+            // Note: .NET uses full XML schema URIs for standard claim types
+            // http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier -> Sub (userId)
+            // http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name -> UniqueName (username)
+            // http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress -> Email
 
-            var username = principal.FindFirst(JwtRegisteredClaimNames.Name)?.Value
-                          ?? principal.FindFirst("username")?.Value;
-
-            var email = principal.FindFirst(JwtRegisteredClaimNames.Email)?.Value
-                       ?? principal.FindFirst("email")?.Value;
+            var userId = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var username = principal.FindFirst(ClaimTypes.Name)?.Value;
+            var email = principal.FindFirst(ClaimTypes.Email)?.Value;
+            var name = principal.FindFirst("name")?.Value;
 
             return await Task.FromResult(new TokenValidationResult
             {
                 IsValid = true,
                 UserId = userId,
                 Username = username,
-                Email = email
+                Email = email,
+                Name = name
             });
         }
         catch (SecurityTokenExpiredException)
@@ -206,6 +213,7 @@ public class JwtAuthenticationMiddleware
         public string? UserId { get; set; }
         public string? Username { get; set; }
         public string? Email { get; set; }
+        public string? Name { get; set; }
         public string? ErrorMessage { get; set; }
     }
 }
