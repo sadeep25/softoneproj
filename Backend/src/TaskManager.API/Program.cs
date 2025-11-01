@@ -74,11 +74,14 @@ if (app.Environment.IsDevelopment())
 }
 
 // Global exception handling middleware
-app.UseMiddleware<ExceptionHandlingMiddleware>();
+app.UseExceptionHandlingMiddleware();
 
 app.UseHttpsRedirection();
 
 app.UseCors("AllowAll");
+
+// JWT Authentication Middleware (for logging and additional validation)
+app.UseJwtAuthenticationMiddleware();
 
 app.UseAuthentication();
 
