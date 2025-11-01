@@ -28,9 +28,21 @@ public class MappingProfile : Profile
         CreateMap<UpdateTaskDto, TaskItem>()
             .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
 
-        // UpdateTaskCommand to TaskItem
+        // UpdateTaskCommand to TaskItem - Only map properties that are explicitly set
         CreateMap<UpdateTaskCommand, TaskItem>()
-            .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+            .ForMember(dest => dest.Title, opt => opt.Condition(src => src.Title != null))
+            .ForMember(dest => dest.Description, opt => opt.Condition(src => src.Description != null))
+            .ForMember(dest => dest.Status, opt => opt.Condition(src => src.Status.HasValue))
+            .ForMember(dest => dest.Priority, opt => opt.Condition(src => src.Priority.HasValue))
+            .ForMember(dest => dest.DueDate, opt => opt.Condition(src => src.DueDate.HasValue))
+            .ForMember(dest => dest.Tags, opt => opt.Condition(src => src.Tags != null))
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.IsCompleted, opt => opt.Ignore())
+            .ForMember(dest => dest.CompletedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.CreatedBy, opt => opt.Ignore())
+            .ForMember(dest => dest.UpdatedBy, opt => opt.Ignore());
 
         // User to UserDto
         CreateMap<User, UserDto>();
