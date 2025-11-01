@@ -1,0 +1,17 @@
+node_modules
+npm-debug.log
+.angular
+dist
+.git
+.gitignore
+*.md
+.vscode
+.editorconfig
+.prettierrc
+.prettierignore
+Dockerfile
+.dockerignore
+.env
+.env.local
+coverage
+.nyc_output
