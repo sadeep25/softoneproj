@@ -19,7 +19,6 @@ public class CreateTaskCommandHandler : IRequestHandler<CreateTaskCommand, TaskD
 
     public async Task<TaskDto> Handle(CreateTaskCommand request, CancellationToken cancellationToken)
     {
-        // Map command to entity
         var task = _mapper.Map<TaskItem>(request);
         task.Id = Guid.NewGuid();
         task.CreatedAt = DateTime.UtcNow;
@@ -27,7 +26,6 @@ public class CreateTaskCommandHandler : IRequestHandler<CreateTaskCommand, TaskD
         await _unitOfWork.Tasks.AddAsync(task);
         await _unitOfWork.CompleteAsync();
 
-        // Map entity to DTO
         return _mapper.Map<TaskDto>(task);
     }
 }

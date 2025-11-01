@@ -38,7 +38,6 @@ public class AuthService : IAuthService
                 };
             }
 
-            // Simple password validation (in production, use hashed passwords)
             if (user.Password != loginDto.Password)
             {
                 return new AuthResponseDto
@@ -57,14 +56,12 @@ public class AuthService : IAuthService
                 };
             }
 
-            // Update last login time
             user.LastLoginAt = DateTime.UtcNow;
             _unitOfWork.Users.Update(user);
             await _unitOfWork.CompleteAsync();
 
             var userDto = _mapper.Map<UserDto>(user);
 
-            // Generate JWT token
             var jwtKey = _configuration["Jwt:Key"];
             var issuer = _configuration["Jwt:Issuer"];
             var audience = _configuration["Jwt:Audience"];

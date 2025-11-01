@@ -1,6 +1,5 @@
 import { createAction, props } from '@ngrx/store';
 
-// Actions for managing loading state
 export const startLoading = createAction(
   '[Loading] Start Loading',
   props<{ operation: string }>()

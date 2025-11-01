@@ -1,14 +1,12 @@
 import { createAction, props } from '@ngrx/store';
 import { Task, CreateTaskDto, UpdateTaskDto, TaskStatus, TaskPriority } from '../../models';
 
-// Filter interface
 export interface TaskFilters {
   status?: TaskStatus;
   priority?: TaskPriority;
   searchTerm?: string;
 }
 
-// Page Actions - User interactions
 export const loadTasks = createAction(
   '[Task Page] Load Tasks'
 );

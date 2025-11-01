@@ -31,17 +31,15 @@ import { Component, input, output, computed } from '@angular/core';
   standalone: true
 })
 export class ErrorMessageComponent {
-  // Signal-based inputs and outputs
   title = input<string>();
   message = input<string>();
   type = input<'error' | 'warning' | 'info'>('error');
   showRetry = input<boolean>(false);
   dismissible = input<boolean>(false);
-  
+
   retry = output<void>();
   dismiss = output<void>();
 
-  // Computed signals
   errorClass = computed(() => `error-${this.type()}`);
   displayTitle = computed(() => this.title() || this.getDefaultTitle());
 

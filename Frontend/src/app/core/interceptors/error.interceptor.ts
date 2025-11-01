@@ -10,19 +10,15 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
-      // Clear all loading operations
       store.dispatch(LoadingActions.clearAllLoading());
 
       let errorMessage = 'An unexpected error occurred';
       let errorTitle = 'Error';
       const isAuthEndpoint = req.url.includes('/auth/login');
 
-      // Try to get message from API response first
       if (error.error?.message) {
         errorMessage = error.error.message;
       }
-
-      // Provide user-friendly messages based on status code
       switch (error.status) {
         case 400:
           errorTitle = 'Invalid Request';
@@ -66,7 +62,6 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
           }
       }
 
-      // Show notification for non-auth endpoints
       if (!isAuthEndpoint) {
         store.dispatch(
           NotificationActions.showError({

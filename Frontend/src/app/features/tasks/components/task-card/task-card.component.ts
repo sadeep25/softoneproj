@@ -9,13 +9,10 @@ import { Task, TaskStatus } from '../../../../core/models';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaskCardComponent {
-  // Signal-based inputs and outputs
   task = input.required<Task>();
   statusChange = output<TaskStatus>();
-  // Emit when the card is clicked/selected
   select = output<Task>();
 
-  // Computed signals for derived values
   priorityClass = computed(() => `priority-${this.task().priority.toLowerCase()}`);
 
   statusClass = computed(() => `status-${this.task().status.toLowerCase()}`);

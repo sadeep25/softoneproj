@@ -20,9 +20,6 @@ public class AuthController : ControllerBase
         _logger = logger;
     }
 
-    /// <summary>
-    /// Authenticates a user with username and password
-    /// </summary>
     [HttpPost("login")]
     [ProducesResponseType(typeof(ApiResponse<AuthResponseDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -41,9 +38,6 @@ public class AuthController : ControllerBase
         return Unauthorized(ApiResponse<AuthResponseDto>.FailureResponse(result.Message ?? "Login failed"));
     }
 
-    /// <summary>
-    /// Validates if a user exists by username
-    /// </summary>
     [HttpGet("validate/{username}")]
     [ProducesResponseType(typeof(ApiResponse<UserDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

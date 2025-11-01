@@ -4,10 +4,8 @@
 
 namespace TaskManager.Infrastructure.Migrations
 {
-    /// <inheritdoc />
     public partial class AddAssignedToColumn : Migration
     {
-        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
@@ -17,7 +15,6 @@ namespace TaskManager.Infrastructure.Migrations
                 nullable: true);
         }
 
-        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(

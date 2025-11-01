@@ -14,7 +14,6 @@ export class AuthEffects {
   private authService = inject(AuthService);
   private router = inject(Router);
 
-  // Init Effect - Restore auth state from localStorage
   init$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthPageActions.init),
@@ -27,7 +26,6 @@ export class AuthEffects {
             const user = JSON.parse(userJson);
             return AuthApiActions.initSuccess({ user, token });
           } catch (error) {
-            // Invalid JSON in localStorage, clear it
             localStorage.removeItem('currentUser');
             localStorage.removeItem('token');
             return AuthApiActions.initFailure();
@@ -38,7 +36,6 @@ export class AuthEffects {
     )
   );
 
-  // Login Effect
   login$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthPageActions.login),
@@ -56,7 +53,6 @@ export class AuthEffects {
           catchError((error: any) => {
             let errorMessage = 'An error occurred during login';
 
-            // Extract user-friendly error message
             if (error.status === 401) {
               errorMessage = 'Invalid username or password. Please try again';
             } else if (error.status === 0) {
@@ -74,7 +70,6 @@ export class AuthEffects {
     )
   );
 
-  // Login Success Effect - Persist to localStorage
   persistAuthOnLoginSuccess$ = createEffect(
     () =>
       this.actions$.pipe(
@@ -92,7 +87,6 @@ export class AuthEffects {
     { dispatch: false }
   );
 
-  // Login Success Effect - Navigate to tasks and show notification
   navigateOnLoginSuccess$ = createEffect(
     () =>
       this.actions$.pipe(
@@ -109,7 +103,6 @@ export class AuthEffects {
       )
   );
 
-  // Login Failure Effect - Show error notification
   loginFailure$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthApiActions.loginFailure),
@@ -122,7 +115,6 @@ export class AuthEffects {
     )
   );
 
-  // Logout Effect - Clear localStorage
   logout$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthPageActions.logout),
@@ -134,7 +126,6 @@ export class AuthEffects {
     )
   );
 
-  // Logout Success Effect - Navigate to login and show notification
   logoutSuccess$ = createEffect(
     () =>
       this.actions$.pipe(
@@ -151,7 +142,6 @@ export class AuthEffects {
       )
   );
 
-  // Init Failure Effect - Navigate to login without notification
   initFailure$ = createEffect(
     () =>
       this.actions$.pipe(

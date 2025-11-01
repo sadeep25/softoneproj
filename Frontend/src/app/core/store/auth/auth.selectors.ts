@@ -1,10 +1,8 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { AuthState } from './auth.reducer';
 
-// Feature selector
 export const getAuthFeatureState = createFeatureSelector<AuthState>('auth');
 
-// Simple selectors
 export const getUser = createSelector(
   getAuthFeatureState,
   state => state.user
@@ -30,7 +28,6 @@ export const getIsAuthenticated = createSelector(
   state => state.isAuthenticated
 );
 
-// Complex selectors
 export const getUserName = createSelector(
   getUser,
   user => user?.name || ''

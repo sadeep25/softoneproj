@@ -16,7 +16,6 @@ import { Component, input } from '@angular/core';
   standalone: true
 })
 export class LoadingSpinnerComponent {
-  // Signal-based inputs
   message = input<string>();
   overlay = input<boolean>(false);
 }

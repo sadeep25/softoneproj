@@ -11,7 +11,6 @@ import { TaskCardComponent } from '../task-card/task-card.component';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaskBoardComponent {
-  // Signal-based inputs and outputs
   tasksByStatus = input.required<{
     toDo: Task[];
     inProgress: Task[];
@@ -26,7 +25,6 @@ export class TaskBoardComponent {
     this.taskSelect.emit(task);
   }
 
-  // Compute columns once from the incoming signal to avoid calling functions from templates
   readonly columns = computed(() => {
     const s = this.tasksByStatus ? this.tasksByStatus() : { toDo: [], inProgress: [], done: [], cancelled: [] };
     return [

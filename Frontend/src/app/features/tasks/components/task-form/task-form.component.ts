@@ -11,16 +11,13 @@ import { Task, TaskPriority, CreateTaskDto, UpdateTaskDto } from '../../../../co
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaskFormComponent implements OnInit {
-  // Signal-based inputs and outputs
   mode = input<'create' | 'edit'>('create');
   task = input<Task | undefined>(undefined);
   save = output<CreateTaskDto | UpdateTaskDto>();
   cancel = output<void>();
 
-  // State as signal
   isSubmitting = signal(false);
 
-  // Computed signals for derived values
   formTitle = computed(() =>
     this.mode() === 'create' ? 'Create New Task' : 'Edit Task'
   );
@@ -80,7 +77,6 @@ export class TaskFormComponent implements OnInit {
 
     this.save.emit(taskData);
 
-    // Reset submitting state after a delay (in case parent doesn't handle it)
     setTimeout(() => {
       this.isSubmitting.set(false);
     }, 2000);

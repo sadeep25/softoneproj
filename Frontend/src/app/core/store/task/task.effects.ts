@@ -16,7 +16,6 @@ export class TaskEffects {
   private store = inject(Store);
   private taskService = inject(TaskService);
 
-  // Load Tasks Effect with server-side filtering
   loadTasks$ = createEffect(() =>
     this.actions$.pipe(
       ofType(TaskPageActions.loadTasks),
@@ -56,17 +55,14 @@ export class TaskEffects {
     )
   );
 
-  // Reload tasks when filters change (server-side filtering)
   reloadTasksOnFilterChange$ = createEffect(() =>
     this.actions$.pipe(
       ofType(TaskPageActions.setFilters, TaskPageActions.clearFilters),
-      // Add a microtask delay to ensure the reducer has updated the state
       delay(0),
       map(() => TaskPageActions.loadTasks())
     )
   );
 
-  // Create Task Effect
   createTask$ = createEffect(() =>
     this.actions$.pipe(
       ofType(TaskPageActions.createTask),
@@ -99,7 +95,6 @@ export class TaskEffects {
     )
   );
 
-  // Update Task Effect
   updateTask$ = createEffect(() =>
     this.actions$.pipe(
       ofType(TaskPageActions.updateTask),
@@ -132,7 +127,6 @@ export class TaskEffects {
     )
   );
 
-  // Delete Task Effect
   deleteTask$ = createEffect(() =>
     this.actions$.pipe(
       ofType(TaskPageActions.deleteTask),
@@ -165,7 +159,6 @@ export class TaskEffects {
     )
   );
 
-  // Success Notifications
   createTaskSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(TaskApiActions.createTaskSuccess),
@@ -202,7 +195,6 @@ export class TaskEffects {
     )
   );
 
-  // Error Notifications
   loadTasksFailure$ = createEffect(() =>
     this.actions$.pipe(
       ofType(TaskApiActions.loadTasksFailure),

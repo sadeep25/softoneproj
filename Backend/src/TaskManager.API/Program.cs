@@ -9,7 +9,6 @@ using TaskManager.API.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
@@ -17,15 +16,12 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
     });
 
-// Add Application and Infrastructure services
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
-// Add Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Add CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
@@ -36,7 +32,6 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Add JWT Authentication
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -62,25 +57,22 @@ builder.Services.AddAuthentication(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Task Manager API V1");
-        c.RoutePrefix = string.Empty; // Set Swagger UI at app's root
+        c.RoutePrefix = string.Empty;
     });
 }
 
-// Global exception handling middleware
 app.UseExceptionHandlingMiddleware();
 
 app.UseHttpsRedirection();
 
 app.UseCors("AllowAll");
 
-// JWT Authentication Middleware (for logging and additional validation)
 app.UseJwtAuthenticationMiddleware();
 
 app.UseAuthentication();
@@ -89,7 +81,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-// Seed the database
 await DbSeeder.SeedAsync(app.Services);
 
 app.Run();

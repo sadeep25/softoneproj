@@ -3,7 +3,6 @@ import { User } from '../../models';
 import * as AuthPageActions from './auth-page.actions';
 import * as AuthApiActions from './auth-api.actions';
 
-// Auth feature state
 export interface AuthState {
   user: User | null;
   token: string | null;
@@ -22,7 +21,6 @@ const initialState: AuthState = {
 
 export const authReducer = createReducer<AuthState>(
   initialState,
-  // Init
   on(AuthApiActions.initSuccess, (state, action): AuthState => {
     return {
       ...state,
@@ -38,7 +36,6 @@ export const authReducer = createReducer<AuthState>(
       ...initialState
     };
   }),
-  // Login
   on(AuthPageActions.login, (state): AuthState => {
     return {
       ...state,
@@ -67,7 +64,6 @@ export const authReducer = createReducer<AuthState>(
     };
   }),
 
-  // Logout
   on(AuthPageActions.logout, (state): AuthState => {
     return {
       ...state,
@@ -80,7 +76,6 @@ export const authReducer = createReducer<AuthState>(
     };
   }),
 
-  // Clear Error
   on(AuthPageActions.clearError, (state): AuthState => {
     return {
       ...state,

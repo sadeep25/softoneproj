@@ -34,7 +34,6 @@ import * as NotificationActions from '../../../core/store/notification/notificat
 export class NotificationComponent {
   private store = inject(Store);
 
-  // Use store signal selector
   notifications = this.store.selectSignal(NotificationSelectors.selectAllNotifications);
 
   dismiss(id: string): void {

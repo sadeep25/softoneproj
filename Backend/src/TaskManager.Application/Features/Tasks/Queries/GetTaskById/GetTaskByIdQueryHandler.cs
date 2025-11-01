@@ -27,7 +27,6 @@ public class GetTaskByIdQueryHandler : IRequestHandler<GetTaskByIdQuery, TaskDto
             throw new NotFoundException(nameof(TaskItem), request.Id);
         }
 
-        // Map entity to DTO
         return _mapper.Map<TaskDto>(task);
     }
 }

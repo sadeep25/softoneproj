@@ -33,7 +33,6 @@ public class CompleteTaskCommandHandler : IRequestHandler<CompleteTaskCommand, T
         _unitOfWork.Tasks.Update(task);
         await _unitOfWork.CompleteAsync();
 
-        // Map entity to DTO
         return _mapper.Map<TaskDto>(task);
     }
 }

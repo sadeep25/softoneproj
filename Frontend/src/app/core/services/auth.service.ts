@@ -25,7 +25,6 @@ export class AuthService {
           if (response.data.user) {
             localStorage.setItem(this.userKey, JSON.stringify(response.data.user));
           }
-          // If backend doesn't emit tokens (e.g. Token is null), set a fallback logged-in flag
           if (!response.data.token && response.data.user) {
             localStorage.setItem(this.loggedInKey, '1');
           }
@@ -76,27 +75,21 @@ export class AuthService {
     const token = this.getToken();
     if (!token) return false;
 
-    // If token looks like a JWT (three parts separated by '.'), try to validate exp.
-    // If it's not a JWT (opaque token), assume presence means authenticated.
     try {
       const parts = token.split('.');
       if (parts.length === 3) {
         const payload = JSON.parse(atob(parts[1]));
-        // If exp exists, check expiry. If not present, assume token is valid.
         if (payload && typeof payload.exp === 'number') {
           return payload.exp * 1000 > Date.now();
         }
       }
-      // If we couldn't parse a valid exp claim, but token exists, treat as authenticated.
       return true;
     } catch {
-      // On any parsing error, fallback to treating the token as valid (opaque token case).
       return true;
     }
   }
 
   private storeTokens(token?: string, refreshToken?: string): void {
-    // Only set items when values are provided (they may be optional on the API response)
     if (token) {
       localStorage.setItem(this.tokenKey, token);
     }

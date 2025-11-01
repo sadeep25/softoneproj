@@ -23,10 +23,8 @@ import * as fromTask from '../../../../core/store/task';
   ]
 })
 export class TasksContainerComponent implements OnInit {
-  // Inject dependencies
   private readonly store = inject(Store);
 
-  // Signals from store using selectSignal
   tasks = this.store.selectSignal(fromTask.getTasks);
   filteredTasks = this.store.selectSignal(fromTask.getFilteredTasks);
   tasksByStatus = this.store.selectSignal(fromTask.getTasksByStatus);
@@ -36,12 +34,10 @@ export class TasksContainerComponent implements OnInit {
   selectedTask = this.store.selectSignal(fromTask.getSelectedTask);
   filters = this.store.selectSignal(fromTask.getFilters);
 
-  // Local component state as signals
   viewMode = signal<'list' | 'board'>('board');
   showCreateForm = signal(false);
 
   ngOnInit(): void {
-    // Dispatch load tasks action
     this.store.dispatch(TaskPageActions.loadTasks());
   }
 
@@ -85,7 +81,6 @@ export class TasksContainerComponent implements OnInit {
     this.showCreateForm.set(false);
   }
 
-  // Save edits for an existing task selected from the list
   onSaveEdit(taskData: UpdateTaskDto): void {
     const current = this.selectedTask();
     if (!current) return;

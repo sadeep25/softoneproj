@@ -1,7 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { Task } from '../../models';
 
-// API Actions - API response actions
 export const loadTasksSuccess = createAction(
   '[Task API] Load Tasks Success',
   props<{ tasks: Task[] }>()

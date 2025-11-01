@@ -52,7 +52,6 @@ export class TaskService {
     return this.http.post<ApiResponse<Task>>(`${this.apiUrl}/${id}/complete`, {});
   }
 
-  // Stream methods for real-time updates
   getTasks$(): Observable<ApiResponse<Task[]>> {
     return this.http.get<ApiResponse<Task[]>>(this.apiUrl);
   }

@@ -16,16 +16,13 @@ export class App implements OnInit {
   private store = inject(Store);
   private router = inject(Router);
 
-  // Use store signal selectors
   isAuthenticated = this.store.selectSignal(AuthSelectors.getIsAuthenticated);
   userName = this.store.selectSignal(AuthSelectors.getUserName);
   isLoginPage = signal(false);
 
   ngOnInit(): void {
-    // Restore auth state from localStorage on app initialization
     this.store.dispatch(AuthPageActions.init());
 
-    // Track route changes to hide login button on login page
     this.isLoginPage.set(this.router.url === '/login');
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))

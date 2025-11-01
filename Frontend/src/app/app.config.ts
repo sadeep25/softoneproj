@@ -30,7 +30,6 @@ export const appConfig: ApplicationConfig = {
         loadingInterceptor
       ])
     ),
-    // NgRx Store configuration
     provideStore({
       tasks: taskReducer,
       auth: authReducer,

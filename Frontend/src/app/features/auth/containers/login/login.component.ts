@@ -17,7 +17,6 @@ export class LoginComponent {
   private store = inject(Store);
 
   loginForm: FormGroup;
-  // convert store observable to a signal (Angular 16+)
   isLoading = this.store.selectSignal(AuthSelectors.getLoading);
 
   isFieldInvalid(fieldName: string): boolean {
@@ -37,7 +36,6 @@ export class LoginComponent {
       this.store.dispatch(AuthPageActions.clearError());
       this.store.dispatch(AuthPageActions.login({ credentials: this.loginForm.value }));
     } else {
-      // Mark all fields as touched to show validation errors
       Object.keys(this.loginForm.controls).forEach(key => {
         this.loginForm.get(key)?.markAsTouched();
       });

@@ -24,9 +24,6 @@ public class TasksController : ControllerBase
         _mediator = mediator;
     }
 
-    /// <summary>
-    /// Gets all tasks with optional filtering
-    /// </summary>
     [HttpGet]
     [ProducesResponseType(typeof(ApiResponse<IEnumerable<TaskDto>>), StatusCodes.Status200OK)]
     public async Task<ActionResult<ApiResponse<IEnumerable<TaskDto>>>> GetAllTasks(
@@ -42,13 +39,9 @@ public class TasksController : ControllerBase
         };
 
         var tasks = await _mediator.Send(query);
-        //await Task.Delay(2000); // Simulate delay
         return Ok(ApiResponse<IEnumerable<TaskDto>>.SuccessResponse(tasks, "Tasks retrieved successfully"));
     }
 
-    /// <summary>
-    /// Gets a specific task by id
-    /// </summary>
     [HttpGet("{id:guid}")]
     [ProducesResponseType(typeof(ApiResponse<TaskDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -58,9 +51,6 @@ public class TasksController : ControllerBase
         return Ok(ApiResponse<TaskDto>.SuccessResponse(task, "Task retrieved successfully"));
     }
 
-    /// <summary>
-    /// Creates a new task
-    /// </summary>
     [HttpPost]
     [ProducesResponseType(typeof(ApiResponse<TaskDto>), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -71,9 +61,6 @@ public class TasksController : ControllerBase
         return CreatedAtAction(nameof(GetTaskById), new { id = task.Id }, response);
     }
 
-    /// <summary>
-    /// Updates an existing task
-    /// </summary>
     [HttpPut("{id:guid}")]
     [ProducesResponseType(typeof(ApiResponse<TaskDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -85,9 +72,6 @@ public class TasksController : ControllerBase
         return Ok(ApiResponse<TaskDto>.SuccessResponse(task, "Task updated successfully"));
     }
 
-    /// <summary>
-    /// Deletes a task
-    /// </summary>
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -97,9 +81,6 @@ public class TasksController : ControllerBase
         return Ok(ApiResponse<object>.SuccessResponse(new { }, "Task deleted successfully"));
     }
 
-    /// <summary>
-    /// Marks a task as completed
-    /// </summary>
     [HttpPost("{id:guid}/complete")]
     [ProducesResponseType(typeof(ApiResponse<TaskDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

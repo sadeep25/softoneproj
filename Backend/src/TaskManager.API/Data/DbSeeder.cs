@@ -15,7 +15,6 @@ public static class DbSeeder
 
         try
         {
-            // Apply migrations if any are pending
             if ((await context.Database.GetPendingMigrationsAsync()).Any())
             {
                 Console.WriteLine("Applying pending migrations...");
@@ -24,11 +23,9 @@ public static class DbSeeder
             }
             else
             {
-                // Ensure database exists (will not create if it already exists)
                 await context.Database.EnsureCreatedAsync();
             }
 
-            // Seed users if none exist
             if (!await context.Users.AnyAsync())
             {
                 Console.WriteLine("Seeding users...");
@@ -41,7 +38,7 @@ public static class DbSeeder
                         Name = "Admin User",
                         Email = "admin@taskmanager.com",
                         Username = "admin",
-                        Password = "admin123", // In production, this should be hashed
+                        Password = "admin123",
                         IsActive = true,
                         CreatedAt = DateTime.UtcNow
                     },
@@ -51,7 +48,7 @@ public static class DbSeeder
                         Name = "John Doe",
                         Email = "john.doe@taskmanager.com",
                         Username = "johndoe",
-                        Password = "john123", // In production, this should be hashed
+                        Password = "john123",
                         IsActive = true,
                         CreatedAt = DateTime.UtcNow
                     },
@@ -61,7 +58,7 @@ public static class DbSeeder
                         Name = "Jane Smith",
                         Email = "jane.smith@taskmanager.com",
                         Username = "janesmith",
-                        Password = "jane123", // In production, this should be hashed
+                        Password = "jane123",
                         IsActive = true,
                         CreatedAt = DateTime.UtcNow
                     },
@@ -71,7 +68,7 @@ public static class DbSeeder
                         Name = "Test User",
                         Email = "test@taskmanager.com",
                         Username = "testuser",
-                        Password = "test123", // In production, this should be hashed
+                        Password = "test123",
                         IsActive = true,
                         CreatedAt = DateTime.UtcNow
                     },
@@ -81,7 +78,7 @@ public static class DbSeeder
                         Name = "Demo User",
                         Email = "demo@taskmanager.com",
                         Username = "demo",
-                        Password = "demo123", // In production, this should be hashed
+                        Password = "demo123",
                         IsActive = true,
                         CreatedAt = DateTime.UtcNow
                     }
@@ -92,7 +89,6 @@ public static class DbSeeder
 
                 Console.WriteLine($"Seeded {users.Length} users successfully!");
 
-                // Seed tasks for the users
                 await SeedTasksAsync(context, users);
             }
             else
@@ -123,7 +119,6 @@ public static class DbSeeder
 
         var tasks = new List<TaskItem>
         {
-            // Admin's tasks
             new TaskItem
             {
                 Id = Guid.NewGuid(),
@@ -183,7 +178,6 @@ public static class DbSeeder
                 UpdatedAt = DateTime.UtcNow.AddHours(-2)
             },
 
-            // John's tasks
             new TaskItem
             {
                 Id = Guid.NewGuid(),
@@ -242,7 +236,6 @@ public static class DbSeeder
                 CreatedAt = DateTime.UtcNow.AddDays(-1)
             },
 
-            // Jane's tasks
             new TaskItem
             {
                 Id = Guid.NewGuid(),
@@ -317,7 +310,6 @@ public static class DbSeeder
                 CreatedAt = DateTime.UtcNow.AddDays(-1)
             },
 
-            // Additional mixed tasks
             new TaskItem
             {
                 Id = Guid.NewGuid(),

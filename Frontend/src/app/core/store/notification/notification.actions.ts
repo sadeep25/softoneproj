@@ -1,7 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { NotificationMessage } from './notification.model';
 
-// Actions for managing notification state
 export const showNotification = createAction(
   '[Notification] Show Notification',
   props<{ notification: Omit<NotificationMessage, 'id'> }>()
@@ -21,7 +20,6 @@ export const clearAllNotifications = createAction(
   '[Notification] Clear All Notifications'
 );
 
-// Convenience actions for different notification types
 export const showSuccess = createAction(
   '[Notification] Show Success',
   props<{ title: string; message?: string; duration?: number }>()

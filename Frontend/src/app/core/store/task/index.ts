@@ -1,4 +1,3 @@
-// Public API for Task Store
 export * from './task-page.actions';
 export * from './task-api.actions';
 export * from './task.reducer';

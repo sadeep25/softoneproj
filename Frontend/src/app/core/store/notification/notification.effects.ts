@@ -13,7 +13,6 @@ export class NotificationEffects {
     return Date.now().toString(36) + Math.random().toString(36).substr(2);
   }
 
-  // Handle convenience actions (showSuccess, showError, etc.)
   showSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(NotificationActions.showSuccess),
@@ -79,7 +78,6 @@ export class NotificationEffects {
     )
   );
 
-  // Add notification to store with generated ID
   showNotification$ = createEffect(() =>
     this.actions$.pipe(
       ofType(NotificationActions.showNotification),
@@ -95,7 +93,6 @@ export class NotificationEffects {
     )
   );
 
-  // Auto-remove notifications after duration
   autoRemoveNotification$ = createEffect(
     () =>
       this.actions$.pipe(

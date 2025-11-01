@@ -4,7 +4,6 @@ import * as TaskPageActions from './task-page.actions';
 import * as TaskApiActions from './task-api.actions';
 import { TaskFilters } from './task-page.actions';
 
-// Task feature state
 export interface TaskState {
   tasks: Task[];
   loading: boolean;
@@ -23,7 +22,6 @@ const initialState: TaskState = {
 
 export const taskReducer = createReducer<TaskState>(
   initialState,
-  // Load Tasks
   on(TaskPageActions.loadTasks, (state): TaskState => {
     return {
       ...state,
@@ -48,7 +46,6 @@ export const taskReducer = createReducer<TaskState>(
     };
   }),
 
-  // Create Task
   on(TaskPageActions.createTask, (state): TaskState => {
     return {
       ...state,
@@ -72,7 +69,6 @@ export const taskReducer = createReducer<TaskState>(
     };
   }),
 
-  // Update Task
   on(TaskPageActions.updateTask, (state): TaskState => {
     return {
       ...state,
@@ -100,7 +96,6 @@ export const taskReducer = createReducer<TaskState>(
     };
   }),
 
-  // Delete Task
   on(TaskPageActions.deleteTask, (state): TaskState => {
     return {
       ...state,
@@ -125,7 +120,6 @@ export const taskReducer = createReducer<TaskState>(
     };
   }),
 
-  // Other Actions
   on(TaskPageActions.selectTask, (state, action): TaskState => {
     return {
       ...state,
@@ -139,18 +133,14 @@ export const taskReducer = createReducer<TaskState>(
     };
   }),
   on(TaskPageActions.setFilters, (state, action): TaskState => {
-    // If action.filters is an empty object with no keys, clear all filters
     const actionHasNoKeys = Object.keys(action.filters).length === 0;
 
     let newFilters: TaskFilters;
     if (actionHasNoKeys) {
-      // Empty object means clear all filters
       newFilters = {};
     } else {
-      // Merge filters, but remove any properties with undefined values
       newFilters = { ...state.filters, ...action.filters };
 
-      // Remove undefined properties from the filters object
       Object.keys(newFilters).forEach(key => {
         if (newFilters[key as keyof TaskFilters] === undefined) {
           delete newFilters[key as keyof TaskFilters];

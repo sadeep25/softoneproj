@@ -57,11 +57,9 @@
 
   <main class="tasks-main">
     <div class="tasks-content">
-      <!-- Show loading spinner in the content area where tasks/board are displayed -->
       @if (isLoading()) {
         <app-loading-spinner message="Loading tasks..."></app-loading-spinner>
       } @else {
-        <!-- Always show content area to prevent flickering -->
         @if (viewMode() === 'list' && filteredTasks().length > 0) {
           <app-task-list
             [tasks]="filteredTasks()"
@@ -79,7 +77,6 @@
           </app-task-board>
         }
 
-        <!-- Empty state when no tasks match filters -->
         @if (filteredTasks().length === 0) {
           <div class="empty-state">
             <div class="empty-icon">📋</div>

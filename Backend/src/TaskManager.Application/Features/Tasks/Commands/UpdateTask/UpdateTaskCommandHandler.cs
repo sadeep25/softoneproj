@@ -27,7 +27,6 @@ public class UpdateTaskCommandHandler : IRequestHandler<UpdateTaskCommand, TaskD
             throw new NotFoundException(nameof(TaskItem), request.Id);
         }
 
-        // Map only non-null properties from request to task
         _mapper.Map(request, task);
 
         task.UpdatedAt = DateTime.UtcNow;
@@ -35,7 +34,6 @@ public class UpdateTaskCommandHandler : IRequestHandler<UpdateTaskCommand, TaskD
         _unitOfWork.Tasks.Update(task);
         await _unitOfWork.CompleteAsync();
 
-        // Map entity to DTO
         return _mapper.Map<TaskDto>(task);
     }
 }

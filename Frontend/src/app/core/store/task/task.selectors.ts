@@ -2,10 +2,8 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { TaskState } from './task.reducer';
 import { Task, TaskStatus, TaskPriority } from '../../models';
 
-// Feature selector
 export const getTaskFeatureState = createFeatureSelector<TaskState>('tasks');
 
-// Simple selectors
 export const getTasks = createSelector(
   getTaskFeatureState,
   state => state.tasks
@@ -31,8 +29,6 @@ export const getFilters = createSelector(
   state => state.filters
 );
 
-// Complex selectors
-// Server-side filtering - tasks are already filtered from API
 export const getFilteredTasks = createSelector(
   getTasks,
   (tasks) => tasks

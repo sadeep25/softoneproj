@@ -1,7 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { LoginRequest } from '../../models';
 
-// Page Actions - User interactions
 export const init = createAction(
   '[Auth Page] Init'
 );

@@ -1,7 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { ApiResponse, AuthResponse, User } from '../../models';
 
-// API Actions - API response actions
 export const initSuccess = createAction(
   '[Auth API] Init Success',
   props<{ user: User; token: string }>()

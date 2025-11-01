@@ -20,7 +20,6 @@ public class GetAllTasksQueryHandler : IRequestHandler<GetAllTasksQuery, IEnumer
     {
         var tasks = await _unitOfWork.Tasks.GetAllOrderedByCreatedDateAsync();
 
-        // Apply filters
         var filteredTasks = tasks.AsQueryable();
 
         if (request.Status.HasValue)
@@ -33,8 +32,6 @@ public class GetAllTasksQueryHandler : IRequestHandler<GetAllTasksQuery, IEnumer
             filteredTasks = filteredTasks.Where(t => t.Priority == request.Priority.Value);
         }
 
-        // AssignedTo filter removed - field no longer exists on TaskItem
-
         if (!string.IsNullOrWhiteSpace(request.SearchTerm))
         {
             var searchTerm = request.SearchTerm.ToLower();
@@ -43,7 +40,6 @@ public class GetAllTasksQueryHandler : IRequestHandler<GetAllTasksQuery, IEnumer
                 (t.Description != null && t.Description.ToLower().Contains(searchTerm)));
         }
 
-        // Map collection of entities to DTOs
         return _mapper.Map<IEnumerable<TaskDto>>(filteredTasks.ToList());
     }
 }

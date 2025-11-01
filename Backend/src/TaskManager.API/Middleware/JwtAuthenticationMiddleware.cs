@@ -5,9 +5,6 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace TaskManager.API.Middleware;
 
-/// <summary>
-/// Middleware for JWT token validation and authentication logging
-/// </summary>
 public class JwtAuthenticationMiddleware
 {
     private readonly RequestDelegate _next;
@@ -26,19 +23,16 @@ public class JwtAuthenticationMiddleware
 
     public async Task InvokeAsync(HttpContext context)
     {
-        // Extract token from Authorization header
         var token = ExtractTokenFromHeader(context);
 
         if (!string.IsNullOrEmpty(token))
         {
             try
             {
-                // Validate the token
                 var validationResult = await ValidateTokenAsync(token);
 
                 if (validationResult.IsValid)
                 {
-                    // Log successful authentication
                     var userId = validationResult.UserId;
                     var username = validationResult.Username;
                     var email = validationResult.Email;
@@ -48,7 +42,6 @@ public class JwtAuthenticationMiddleware
                         "JWT token validated successfully - User: {Username}, Name: {Name}, Email: {Email}, ID: {UserId}",
                         username ?? "N/A", name ?? "N/A", email ?? "N/A", userId ?? "N/A");
 
-                    // Add custom headers for debugging (optional, remove in production)
                     if (context.Request.Headers.ContainsKey("X-Debug"))
                     {
                         context.Response.Headers.Append("X-Authenticated-User", username ?? "Unknown");
@@ -72,7 +65,6 @@ public class JwtAuthenticationMiddleware
         }
         else
         {
-            // Log requests without tokens (only for protected endpoints)
             var path = context.Request.Path.Value ?? string.Empty;
             var isPublicEndpoint = IsPublicEndpoint(path);
 
@@ -85,7 +77,6 @@ public class JwtAuthenticationMiddleware
             }
         }
 
-        // Continue to next middleware
         await _next(context);
     }
 
@@ -98,7 +89,6 @@ public class JwtAuthenticationMiddleware
             return null;
         }
 
-        // Check if it's a Bearer token
         if (authHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
         {
             return authHeader.Substring("Bearer ".Length).Trim();
@@ -138,12 +128,6 @@ public class JwtAuthenticationMiddleware
             };
 
             var principal = tokenHandler.ValidateToken(token, validationParameters, out var validatedToken);
-
-            // Extract user information from claims
-            // Note: .NET uses full XML schema URIs for standard claim types
-            // http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier -> Sub (userId)
-            // http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name -> UniqueName (username)
-            // http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress -> Email
 
             var userId = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var username = principal.FindFirst(ClaimTypes.Name)?.Value;
